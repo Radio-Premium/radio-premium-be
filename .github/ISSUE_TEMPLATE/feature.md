@@ -2,7 +2,7 @@
 name: 기능 추가
 about: 기능 구현 관련 템플릿입니다.
 title: ""
-labels: enhancement
+labels: feat
 assignees: ""
 ---
 
