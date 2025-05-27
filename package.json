@@ -1,0 +1,12 @@
+{
+  "name": "radiopremium-be",
+  "version": "1.0.0",
+  "description": "라디오 프리미엄 백엔드",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
