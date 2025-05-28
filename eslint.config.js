@@ -1,11 +1,9 @@
 import js from "@eslint/js";
 import pluginImport from "eslint-plugin-import";
 import globals from "globals";
-import { defineConfig } from "eslint/config";
 
-export default defineConfig([
+export default [
   {
-    extends: ["plugin:import/recommended"],
     files: ["**/*.{js,mjs,cjs}"],
     languageOptions: {
       globals: globals.node,
@@ -28,12 +26,6 @@ export default defineConfig([
             "object",
             "type",
           ],
-          pathGroups: [
-            {
-              pattern: "@/**",
-              group: "internal",
-            },
-          ],
           "newlines-between": "always",
           alphabetize: {
             order: "asc",
@@ -43,4 +35,4 @@ export default defineConfig([
       ],
     },
   },
-]);
+];
