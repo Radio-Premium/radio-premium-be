@@ -82,12 +82,31 @@ export const registerInterestChannel = async (userId, channelId) => {
     return { status: 404, error: "채널을 찾을 수 없습니다." };
   }
 
-  const { data: interestList } = await supabase
+  const { data: existingInterest } = await supabase
     .from("interest_channels")
     .select("id")
-    .eq("user_id", userId);
+    .eq("user_id", userId)
+    .eq("channel_id", channelId)
+    .maybeSingle();
 
-  const priority = interestList?.length || 0;
+  if (existingInterest) {
+    return { status: 400, error: "이미 등록된 관심 채널입니다." };
+  }
+
+  const { data: interestList, error: priorityError } = await supabase
+    .from("interest_channels")
+    .select("priority")
+    .eq("user_id", userId)
+    .order("priority", { ascending: false })
+    .limit(1);
+
+  if (priorityError) {
+    throw new Error("Supabase query failed: priority check");
+  }
+
+  const currentMaxPriority = interestList?.[0]?.priority;
+  const nextPriority =
+    typeof currentMaxPriority === "number" ? currentMaxPriority + 1 : 0;
 
   const { error: insertError } = await supabase
     .from("interest_channels")
@@ -95,7 +114,7 @@ export const registerInterestChannel = async (userId, channelId) => {
       {
         user_id: userId,
         channel_id: channelId,
-        priority,
+        priority: nextPriority,
       },
     ]);
 
