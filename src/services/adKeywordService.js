@@ -6,7 +6,7 @@ export const findAdKeywordList = async () => {
     `
       id,
       keyword
-      `
+    `
   );
 
   if (error) {
