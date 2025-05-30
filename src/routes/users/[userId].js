@@ -2,6 +2,7 @@ import express from "express";
 
 import {
   createInterestChannel,
+  deleteInterestChannel,
   getInterestChannelsById,
   getUserById,
 } from "../../controllers/userController.js";
@@ -19,6 +20,11 @@ router.post(
   "/:userId/interest-channels",
   validateUserId,
   createInterestChannel
+);
+router.delete(
+  "/:userId/interest-channels",
+  validateUserId,
+  deleteInterestChannel
 );
 
 export default router;
