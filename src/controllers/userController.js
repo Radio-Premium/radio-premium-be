@@ -1,4 +1,7 @@
-import { findUserById } from "../services/userService.js";
+import {
+  findUserById,
+  findInterestChannelsById,
+} from "../services/userService.js";
 
 export const getUserById = async (req, res, next) => {
   try {
@@ -12,6 +15,17 @@ export const getUserById = async (req, res, next) => {
     }
 
     res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getInterestChannelsById = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const channels = await findInterestChannelsById(Number(userId));
+
+    res.status(200).json(channels);
   } catch (error) {
     next(error);
   }
