@@ -1,6 +1,7 @@
 import express from "express";
 
 import {
+  createInterestChannel,
   getInterestChannelsById,
   getUserById,
 } from "../../controllers/userController.js";
@@ -13,6 +14,11 @@ router.get(
   "/:userId/interest-channels",
   validateUserId,
   getInterestChannelsById
+);
+router.post(
+  "/:userId/interest-channels",
+  validateUserId,
+  createInterestChannel
 );
 
 export default router;
