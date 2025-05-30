@@ -37,3 +37,20 @@ export const findUserById = async (userId) => {
     })),
   };
 };
+
+export const findInterestChannelsById = async (userId) => {
+  const { data, error } = await supabase
+    .from("interest_channels")
+    .select("channel_id, priority")
+    .eq("user_id", userId)
+    .order("priority", { ascending: true });
+
+  if (error) {
+    console.error("Supabase error:", error);
+    throw new Error("Supabase query failed");
+  }
+
+  const camelData = toCamelCase(data);
+
+  return camelData;
+};
