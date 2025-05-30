@@ -38,6 +38,28 @@ export const findUserById = async (userId) => {
   };
 };
 
+export const registerUser = async (isAdDetect, isReturnChannel) => {
+  const { data, error } = await supabase
+    .from("users")
+    .insert([
+      {
+        is_ad_detect: isAdDetect,
+        is_return_channel: isReturnChannel,
+      },
+    ])
+    .select();
+
+  if (error && !data) {
+    throw new Error("Supabase insert failed");
+  }
+
+  return {
+    status: 201,
+    message: "관심 채널 등록 성공했습니다.",
+    userId: data?.[0]?.id,
+  };
+};
+
 export const findInterestChannelsById = async (userId) => {
   const { data, error } = await supabase
     .from("interest_channels")
