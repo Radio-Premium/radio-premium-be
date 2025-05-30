@@ -1,21 +1,20 @@
 import dotenv from "dotenv";
 import express from "express";
 
-import { supabase } from "./services/supabaseClient.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
+import userRoutes from "./routes/users/[userId].js";
 
 dotenv.config();
+
 const app = express();
 
-app.get("/users", async (req, res) => {
-  const { data, error } = await supabase.from("users").select("*");
+app.use(express.json());
 
-  if (error) {
-    return res.status(500).json({ error });
-  }
+app.use("/users", userRoutes);
 
-  res.json(data);
-});
+app.use(errorHandler);
 
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
