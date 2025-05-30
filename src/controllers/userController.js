@@ -3,6 +3,7 @@ import {
   findInterestChannelsById,
   registerInterestChannel,
   removeInterestChannel,
+  registerUser,
 } from "../services/userService.js";
 
 export const getUserById = async (req, res, next) => {
@@ -17,6 +18,27 @@ export const getUserById = async (req, res, next) => {
     }
 
     res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const createUser = async (req, res, next) => {
+  try {
+    const { isAdDetect = true, isReturnChannel = false } = req.body || {};
+
+    if (
+      typeof isAdDetect !== "boolean" &&
+      typeof isReturnChannel !== "boolean"
+    ) {
+      return res.status(400).json({
+        status: 400,
+        error: "올바르지 않은 형식입니다.",
+      });
+    }
+
+    const message = await registerUser(isAdDetect, isReturnChannel);
+    res.status(201).json(message);
   } catch (error) {
     next(error);
   }
