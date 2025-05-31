@@ -7,11 +7,13 @@ import {
   getUserById,
   updateInterestChannels,
 } from "../../controllers/userController.js";
+import { updateUserSettings } from "../../controllers/userSettingController.js";
 import { validateUserId } from "../../validators/userValidator.js";
 
 const router = express.Router();
 
 router.get("/:userId", validateUserId, getUserById);
+
 router.get(
   "/:userId/interest-channels",
   validateUserId,
@@ -32,5 +34,7 @@ router.delete(
   validateUserId,
   deleteInterestChannel
 );
+
+router.put("/:userId/settings", validateUserId, updateUserSettings);
 
 export default router;
