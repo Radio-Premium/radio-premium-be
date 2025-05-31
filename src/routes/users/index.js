@@ -1,13 +1,12 @@
 import express from "express";
 
+import { createUser, getUserById } from "../../controllers/userController.js";
 import {
-  createUser,
-  getUserById,
   createInterestChannel,
   getInterestChannelsById,
   updateInterestChannels,
   deleteInterestChannel,
-} from "../../controllers/userController.js";
+} from "../../controllers/userInterestChannelController.js";
 import { updateUserSettings } from "../../controllers/userSettingController.js";
 import { validateUserId } from "../../validators/userValidator.js";
 
