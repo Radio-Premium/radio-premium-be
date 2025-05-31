@@ -28,7 +28,7 @@ export const createUser = async (req, res, next) => {
     const { isAdDetect = true, isReturnChannel = false } = req.body || {};
 
     if (
-      typeof isAdDetect !== "boolean" &&
+      typeof isAdDetect !== "boolean" ||
       typeof isReturnChannel !== "boolean"
     ) {
       return res.status(400).json({
