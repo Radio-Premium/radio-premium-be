@@ -1,5 +1,5 @@
-import { supabase } from "./supabaseClient.js";
-import { toCamelCase } from "../utils/caseConverter.js";
+import { toCamelCase } from "../../utils/caseConverter.js";
+import { supabase } from "../supabaseClient.js";
 
 export const createAdReport = async ({
   userId,

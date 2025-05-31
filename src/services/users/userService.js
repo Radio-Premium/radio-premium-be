@@ -1,5 +1,22 @@
-import { supabase } from "./supabaseClient.js";
-import { toCamelCase } from "../utils/caseConverter.js";
+import { toCamelCase } from "../../utils/caseConverter.js";
+import { supabase } from "../supabaseClient.js";
+
+export const registerUser = async (insertFields) => {
+  const { data, error } = await supabase
+    .from("users")
+    .insert([insertFields])
+    .select();
+
+  if (error && !data) {
+    throw new Error("Supabase insert failed");
+  }
+
+  return {
+    status: 201,
+    message: "사용자 등록 성공했습니다.",
+    userId: data?.[0]?.id,
+  };
+};
 
 export const findUserById = async (userId) => {
   const { data, error } = await supabase
@@ -35,22 +52,5 @@ export const findUserById = async (userId) => {
     interestChannels: camelData.interestChannels.map((item) => ({
       channelId: item.channelId,
     })),
-  };
-};
-
-export const registerUser = async (insertFields) => {
-  const { data, error } = await supabase
-    .from("users")
-    .insert([insertFields])
-    .select();
-
-  if (error && !data) {
-    throw new Error("Supabase insert failed");
-  }
-
-  return {
-    status: 201,
-    message: "사용자 등록 성공했습니다.",
-    userId: data?.[0]?.id,
   };
 };

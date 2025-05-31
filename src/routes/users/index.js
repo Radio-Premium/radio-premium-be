@@ -1,13 +1,16 @@
 import express from "express";
 
-import { createUser, getUserById } from "../../controllers/userController.js";
+import {
+  createUser,
+  getUserById,
+} from "../../controllers/users/userController.js";
 import {
   createInterestChannel,
   getInterestChannelsById,
   updateInterestChannels,
   deleteInterestChannel,
-} from "../../controllers/userInterestChannelController.js";
-import { updateUserSettings } from "../../controllers/userSettingController.js";
+} from "../../controllers/users/userInterestChannelController.js";
+import { updateUserSettings } from "../../controllers/users/userSettingController.js";
 import { validateUserId } from "../../validators/userValidator.js";
 
 const router = express.Router();

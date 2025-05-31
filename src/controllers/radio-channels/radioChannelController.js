@@ -1,7 +1,7 @@
 import {
   findRadioChannelList,
   findRadioChannelById,
-} from "../services/radioChannelService.js";
+} from "../../services/radio-channels/radioChannelService.js";
 
 export const getRadioChannelList = async (_req, res, next) => {
   try {

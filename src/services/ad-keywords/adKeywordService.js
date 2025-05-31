@@ -1,5 +1,5 @@
-import { supabase } from "./supabaseClient.js";
-import { toCamelCase } from "../utils/caseConverter.js";
+import { toCamelCase } from "../../utils/caseConverter.js";
+import { supabase } from "../supabaseClient.js";
 
 export const findAdKeywordList = async () => {
   const { data, error } = await supabase.from("ad_keywords").select(

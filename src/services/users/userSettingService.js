@@ -1,4 +1,4 @@
-import { supabase } from "./supabaseClient.js";
+import { supabase } from "../supabaseClient.js";
 
 export const updateUserSettingById = async (userId, updateFields) => {
   const { error } = await supabase

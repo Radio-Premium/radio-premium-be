@@ -1,4 +1,4 @@
-import { createAdReport } from "../services/reportService.js";
+import { createAdReport } from "../../services/reports/reportService.js";
 
 export const postAdReport = async (req, res, next) => {
   try {

@@ -1,22 +1,5 @@
-import { supabase } from "./supabaseClient.js";
-import { toCamelCase } from "../utils/caseConverter.js";
-
-export const findInterestChannelsById = async (userId) => {
-  const { data, error } = await supabase
-    .from("interest_channels")
-    .select("channel_id, priority")
-    .eq("user_id", userId)
-    .order("priority", { ascending: true });
-
-  if (error) {
-    console.error("Supabase error:", error);
-    throw new Error("Supabase query failed");
-  }
-
-  const camelData = toCamelCase(data);
-
-  return camelData;
-};
+import { toCamelCase } from "../../utils/caseConverter.js";
+import { supabase } from "../supabaseClient.js";
 
 export const registerInterestChannel = async (userId, channelId) => {
   const { data: user, error: userError } = await supabase
@@ -86,6 +69,23 @@ export const registerInterestChannel = async (userId, channelId) => {
   }
 
   return { status: 201, message: "관심 채널 등록 성공했습니다." };
+};
+
+export const findInterestChannelsById = async (userId) => {
+  const { data, error } = await supabase
+    .from("interest_channels")
+    .select("channel_id, priority")
+    .eq("user_id", userId)
+    .order("priority", { ascending: true });
+
+  if (error) {
+    console.error("Supabase error:", error);
+    throw new Error("Supabase query failed");
+  }
+
+  const camelData = toCamelCase(data);
+
+  return camelData;
 };
 
 export const updateInterestChannelList = async (userId, channelIds) => {

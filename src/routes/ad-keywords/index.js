@@ -1,6 +1,6 @@
 import express from "express";
 
-import { getAdKeywordList } from "../../controllers/adKeywordController.js";
+import { getAdKeywordList } from "../../controllers/ad-keywords/adKeywordController.js";
 
 const router = express.Router();
 

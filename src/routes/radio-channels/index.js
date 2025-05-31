@@ -3,7 +3,7 @@ import express from "express";
 import {
   getRadioChannelList,
   getRadioChannelById,
-} from "../../controllers/radioChannelController.js";
+} from "../../controllers/radio-channels/radioChannelController.js";
 import { validateChannelId } from "../../validators/channelValidator.js";
 
 const router = express.Router();

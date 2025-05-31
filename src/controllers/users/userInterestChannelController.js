@@ -1,20 +1,9 @@
 import {
-  findInterestChannelsById,
   registerInterestChannel,
-  removeInterestChannel,
+  findInterestChannelsById,
   updateInterestChannelList,
-} from "../services/userInterestChannelService.js";
-
-export const getInterestChannelsById = async (req, res, next) => {
-  try {
-    const { userId } = req.params;
-    const channels = await findInterestChannelsById(Number(userId));
-
-    res.status(200).json(channels);
-  } catch (error) {
-    next(error);
-  }
-};
+  removeInterestChannel,
+} from "../../services/users/userInterestChannelService.js";
 
 export const createInterestChannel = async (req, res, next) => {
   try {
@@ -34,6 +23,17 @@ export const createInterestChannel = async (req, res, next) => {
     );
 
     res.status(200).json(message);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getInterestChannelsById = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const channels = await findInterestChannelsById(Number(userId));
+
+    res.status(200).json(channels);
   } catch (error) {
     next(error);
   }
