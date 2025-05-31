@@ -65,7 +65,7 @@ export const updateInterestChannels = async (req, res, next) => {
     if (!Array.isArray(channelIds)) {
       return res.status(400).json({
         status: 400,
-        error: "channelIds는 배열이어야 합니다.",
+        error: "올바르지 않은 형식입니다.",
       });
     }
 
