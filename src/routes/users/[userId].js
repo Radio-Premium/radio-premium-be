@@ -13,6 +13,7 @@ import { validateUserId } from "../../validators/userValidator.js";
 const router = express.Router();
 
 router.get("/:userId", validateUserId, getUserById);
+router.put("/:userId/settings", validateUserId, updateUserSettings);
 
 router.get(
   "/:userId/interest-channels",
@@ -34,7 +35,5 @@ router.delete(
   validateUserId,
   deleteInterestChannel
 );
-
-router.put("/:userId/settings", validateUserId, updateUserSettings);
 
 export default router;
