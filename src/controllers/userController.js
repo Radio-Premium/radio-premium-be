@@ -3,7 +3,10 @@ import {
   findInterestChannelsById,
   registerInterestChannel,
   removeInterestChannel,
+  updateInterestChannelList,
+  registerUser,
 } from "../services/userService.js";
+import { stringToSnakeCase } from "../utils/caseConverter.js";
 
 export const getUserById = async (req, res, next) => {
   try {
@@ -17,6 +20,35 @@ export const getUserById = async (req, res, next) => {
     }
 
     res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const createUser = async (req, res, next) => {
+  try {
+    const reqSettingFields = ["isAdDetect", "isReturnChannel"];
+    const settingFields = reqSettingFields.map((key) => [
+      key,
+      stringToSnakeCase(key),
+    ]);
+
+    const insertFields = {};
+    for (const [reqKey, dbKey] of settingFields) {
+      const value = req.body?.[reqKey];
+      if (value !== undefined) {
+        if (typeof value !== "boolean") {
+          return res.status(400).json({
+            status: 400,
+            error: "올바르지 않은 형식입니다.",
+          });
+        }
+        insertFields[dbKey] = value;
+      }
+    }
+
+    const message = await registerUser(insertFields);
+    res.status(201).json(message);
   } catch (error) {
     next(error);
   }
@@ -51,6 +83,25 @@ export const createInterestChannel = async (req, res, next) => {
     );
 
     res.status(200).json(message);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateInterestChannels = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { channelIds } = req.body;
+
+    if (!Array.isArray(channelIds)) {
+      return res.status(400).json({
+        status: 400,
+        error: "올바르지 않은 형식입니다.",
+      });
+    }
+
+    const result = await updateInterestChannelList(Number(userId), channelIds);
+    res.status(200).json(result);
   } catch (error) {
     next(error);
   }
