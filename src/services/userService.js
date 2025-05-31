@@ -142,6 +142,67 @@ export const registerInterestChannel = async (userId, channelId) => {
   return { status: 201, message: "관심 채널 등록 성공했습니다." };
 };
 
+export const updateInterestChannelList = async (userId, channelIds) => {
+  const { data: user, error: userError } = await supabase
+    .from("users")
+    .select("id")
+    .eq("id", userId)
+    .maybeSingle();
+
+  if (userError) {
+    throw new Error("Supabase query failed: user check");
+  }
+  if (!user) {
+    return { status: 404, error: "사용자를 찾을 수 없습니다." };
+  }
+
+  const { data: validChannels, error: channelError } = await supabase
+    .from("channels")
+    .select("id")
+    .in("id", channelIds);
+
+  if (channelError) {
+    throw new Error("Supabase query failed: channel check");
+  }
+
+  const validChannelIds = validChannels.map((channel) => channel.id);
+  const invalidChannelIds = channelIds.filter(
+    (id) => !validChannelIds.includes(id)
+  );
+
+  if (invalidChannelIds.length > 0) {
+    return {
+      status: 404,
+      error: "존재하지 않는 채널이 포함되어 있습니다.",
+    };
+  }
+
+  const { error: deleteError } = await supabase
+    .from("interest_channels")
+    .delete()
+    .eq("user_id", userId);
+
+  if (deleteError) {
+    throw new Error("Supabase delete failed");
+  }
+
+  const insertData = channelIds.map((id, index) => ({
+    user_id: userId,
+    channel_id: id,
+    priority: index,
+  }));
+
+  const { error: insertError } = await supabase
+    .from("interest_channels")
+    .insert(insertData);
+
+  if (insertError) {
+    throw new Error("Supabase insert failed");
+  }
+
+  return { status: 200, message: "관심 채널 갱신에 성공했습니다." };
+};
+
 export const removeInterestChannel = async (userId, channelId) => {
   const { data: user, error: userError } = await supabase
     .from("users")
