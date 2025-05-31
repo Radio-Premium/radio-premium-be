@@ -5,6 +5,7 @@ import {
   removeInterestChannel,
   registerUser,
 } from "../services/userService.js";
+import { stringToSnakeCase } from "../utils/caseConverter.js";
 
 export const getUserById = async (req, res, next) => {
   try {
@@ -25,12 +26,13 @@ export const getUserById = async (req, res, next) => {
 
 export const createUser = async (req, res, next) => {
   try {
-    const settingFields = [
-      ["isAdDetect", "is_ad_detect"],
-      ["isReturnChannel", "is_return_channel"],
-    ];
-    const insertFields = {};
+    const reqSettingFields = ["isAdDetect", "isReturnChannel"];
+    const settingFields = reqSettingFields.map((key) => [
+      key,
+      stringToSnakeCase(key),
+    ]);
 
+    const insertFields = {};
     for (const [reqKey, dbKey] of settingFields) {
       const value = req.body?.[reqKey];
       if (value !== undefined) {
