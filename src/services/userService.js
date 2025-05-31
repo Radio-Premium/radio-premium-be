@@ -38,15 +38,10 @@ export const findUserById = async (userId) => {
   };
 };
 
-export const registerUser = async (isAdDetect, isReturnChannel) => {
+export const registerUser = async (insertFields) => {
   const { data, error } = await supabase
     .from("users")
-    .insert([
-      {
-        is_ad_detect: isAdDetect,
-        is_return_channel: isReturnChannel,
-      },
-    ])
+    .insert([insertFields])
     .select();
 
   if (error && !data) {
@@ -55,7 +50,7 @@ export const registerUser = async (isAdDetect, isReturnChannel) => {
 
   return {
     status: 201,
-    message: "관심 채널 등록 성공했습니다.",
+    message: "사용자 등록 성공했습니다.",
     userId: data?.[0]?.id,
   };
 };

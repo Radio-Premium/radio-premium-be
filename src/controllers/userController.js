@@ -25,19 +25,26 @@ export const getUserById = async (req, res, next) => {
 
 export const createUser = async (req, res, next) => {
   try {
-    const { isAdDetect = true, isReturnChannel = false } = req.body || {};
+    const settingFields = [
+      ["isAdDetect", "is_ad_detect"],
+      ["isReturnChannel", "is_return_channel"],
+    ];
+    const insertFields = {};
 
-    if (
-      typeof isAdDetect !== "boolean" ||
-      typeof isReturnChannel !== "boolean"
-    ) {
-      return res.status(400).json({
-        status: 400,
-        error: "올바르지 않은 형식입니다.",
-      });
+    for (const [reqKey, dbKey] of settingFields) {
+      const value = req.body?.[reqKey];
+      if (value !== undefined) {
+        if (typeof value !== "boolean") {
+          return res.status(400).json({
+            status: 400,
+            error: "올바르지 않은 형식입니다.",
+          });
+        }
+        insertFields[dbKey] = value;
+      }
     }
 
-    const message = await registerUser(isAdDetect, isReturnChannel);
+    const message = await registerUser(insertFields);
     res.status(201).json(message);
   } catch (error) {
     next(error);
