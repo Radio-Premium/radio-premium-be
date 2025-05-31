@@ -3,6 +3,7 @@ import {
   findInterestChannelsById,
   registerInterestChannel,
   removeInterestChannel,
+  updateInterestChannelList,
 } from "../services/userService.js";
 
 export const getUserById = async (req, res, next) => {
@@ -51,6 +52,26 @@ export const createInterestChannel = async (req, res, next) => {
     );
 
     res.status(200).json(message);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateInterestChannels = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { channelIds } = req.body;
+
+    if (!Array.isArray(channelIds)) {
+      return res.status(400).json({
+        status: 400,
+        error: "channelIds는 배열이어야 합니다.",
+      });
+    }
+
+    const result = await updateInterestChannelList(Number(userId), channelIds);
+    console.log(result);
+    res.status(200).json(result);
   } catch (error) {
     next(error);
   }
