@@ -70,7 +70,6 @@ export const updateInterestChannels = async (req, res, next) => {
     }
 
     const result = await updateInterestChannelList(Number(userId), channelIds);
-    console.log(result);
     res.status(200).json(result);
   } catch (error) {
     next(error);
