@@ -1,3 +1,4 @@
+import { MESSAGES } from "../../constants/index.js";
 import { toCamelCase } from "../../utils/caseConverter.js";
 import { supabase } from "../supabaseClient.js";
 
@@ -17,7 +18,7 @@ export const getRadioChannelListService = async () => {
 
   if (error) {
     console.error("Supabase error:", error);
-    throw new Error("Supabase query failed");
+    throw new Error(MESSAGES.ERROR.SUPABASE_QUERY_FAILED);
   }
 
   if (!data) {
@@ -52,7 +53,7 @@ export const getRadioChannelByIdService = async (channelId) => {
 
   if (error) {
     console.error("Supabase error:", error);
-    throw new Error("Supabase query failed");
+    throw new Error(MESSAGES.ERROR.SUPABASE_QUERY_FAILED);
   }
 
   if (!data) {

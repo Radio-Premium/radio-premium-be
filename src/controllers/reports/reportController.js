@@ -1,3 +1,4 @@
+import { HTTP_STATUS } from "../../constants/index.js";
 import { createAdReportService } from "../../services/reports/reportService.js";
 
 export const createAdReport = async (req, res, next) => {
@@ -11,7 +12,7 @@ export const createAdReport = async (req, res, next) => {
       channelId,
     });
 
-    res.status(201).json(result);
+    res.status(HTTP_STATUS.CREATED).json(result);
   } catch (error) {
     next(error);
   }

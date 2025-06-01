@@ -1,3 +1,4 @@
+import { HTTP_STATUS, MESSAGES } from "../../constants/index.js";
 import {
   createUserService,
   getUserByIdService,
@@ -17,9 +18,9 @@ export const createUser = async (req, res, next) => {
       const value = req.body?.[reqKey];
       if (value !== undefined) {
         if (typeof value !== "boolean") {
-          return res.status(400).json({
-            status: 400,
-            error: "올바르지 않은 형식입니다.",
+          return res.status(HTTP_STATUS.BAD_REQUEST).json({
+            status: HTTP_STATUS.BAD_REQUEST,
+            error: MESSAGES.ERROR.INVALID_FORMAT,
           });
         }
         insertFields[dbKey] = value;
@@ -27,7 +28,7 @@ export const createUser = async (req, res, next) => {
     }
 
     const message = await createUserService(insertFields);
-    res.status(201).json(message);
+    res.status(HTTP_STATUS.CREATED).json(message);
   } catch (error) {
     next(error);
   }
@@ -39,12 +40,13 @@ export const getUserById = async (req, res, next) => {
     const user = await getUserByIdService(Number(userId));
 
     if (!user) {
-      return res
-        .status(404)
-        .json({ status: 404, error: "사용자를 찾을 수 없습니다." });
+      return res.status(HTTP_STATUS.NOT_FOUND).json({
+        status: HTTP_STATUS.NOT_FOUND,
+        error: MESSAGES.ERROR.USER_NOT_FOUND,
+      });
     }
 
-    res.status(200).json(user);
+    res.status(HTTP_STATUS.OK).json(user);
   } catch (error) {
     next(error);
   }

@@ -1,3 +1,4 @@
+import { HTTP_STATUS, MESSAGES } from "../../constants/index.js";
 import { toCamelCase } from "../../utils/caseConverter.js";
 import { supabase } from "../supabaseClient.js";
 
@@ -21,14 +22,14 @@ export const createAdReportService = async ({
     .single();
 
   if (error) {
-    throw new Error("Supabase insert failed");
+    throw new Error(MESSAGES.ERROR.SUPABASE_INSERT_FAILED);
   }
 
   const camelData = toCamelCase(data);
 
   return {
-    status: 201,
-    message: "광고 제보 등록 성공했습니다.",
+    status: HTTP_STATUS.CREATED,
+    message: MESSAGES.SUCCESS.AD_REPORT_CREATED,
     report: camelData,
   };
 };

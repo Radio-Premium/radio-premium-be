@@ -1,3 +1,4 @@
+import { HTTP_STATUS, MESSAGES } from "../../constants/index.js";
 import {
   createInterestChannelService,
   getInterestChannelByIdService,
@@ -11,9 +12,9 @@ export const createInterestChannel = async (req, res, next) => {
     const { channelId } = req.body;
 
     if (typeof channelId !== "number") {
-      return res.status(400).json({
-        status: 400,
-        error: "올바르지 않은 형식입니다.",
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({
+        status: HTTP_STATUS.BAD_REQUEST,
+        error: MESSAGES.ERROR.INVALID_FORMAT,
       });
     }
 
@@ -22,7 +23,7 @@ export const createInterestChannel = async (req, res, next) => {
       Number(channelId)
     );
 
-    res.status(200).json(message);
+    res.status(HTTP_STATUS.OK).json(message);
   } catch (error) {
     next(error);
   }
@@ -33,7 +34,7 @@ export const getInterestChannelById = async (req, res, next) => {
     const { userId } = req.params;
     const channels = await getInterestChannelByIdService(Number(userId));
 
-    res.status(200).json(channels);
+    res.status(HTTP_STATUS.OK).json(channels);
   } catch (error) {
     next(error);
   }
@@ -45,9 +46,9 @@ export const updateInterestChannels = async (req, res, next) => {
     const { channelIds } = req.body;
 
     if (!Array.isArray(channelIds)) {
-      return res.status(400).json({
-        status: 400,
-        error: "올바르지 않은 형식입니다.",
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({
+        status: HTTP_STATUS.BAD_REQUEST,
+        error: MESSAGES.ERROR.INVALID_FORMAT,
       });
     }
 
@@ -55,7 +56,7 @@ export const updateInterestChannels = async (req, res, next) => {
       Number(userId),
       channelIds
     );
-    res.status(200).json(result);
+    res.status(HTTP_STATUS.OK).json(result);
   } catch (error) {
     next(error);
   }
@@ -67,9 +68,9 @@ export const deleteInterestChannel = async (req, res, next) => {
     const { channelId } = req.body;
 
     if (typeof channelId !== "number") {
-      return res.status(400).json({
-        status: 400,
-        error: "올바르지 않은 형식입니다.",
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({
+        status: HTTP_STATUS.BAD_REQUEST,
+        error: MESSAGES.ERROR.INVALID_FORMAT,
       });
     }
 
@@ -78,7 +79,7 @@ export const deleteInterestChannel = async (req, res, next) => {
       Number(channelId)
     );
 
-    res.status(200).json(message);
+    res.status(HTTP_STATUS.OK).json(message);
   } catch (error) {
     next(error);
   }

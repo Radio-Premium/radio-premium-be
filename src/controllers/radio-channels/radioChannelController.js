@@ -1,3 +1,4 @@
+import { HTTP_STATUS, MESSAGES } from "../../constants/index.js";
 import {
   getRadioChannelListService,
   getRadioChannelByIdService,
@@ -7,7 +8,7 @@ export const getRadioChannelList = async (_req, res, next) => {
   try {
     const channels = await getRadioChannelListService();
 
-    return res.status(200).json(channels);
+    return res.status(HTTP_STATUS.OK).json(channels);
   } catch (error) {
     next(error);
   }
@@ -19,12 +20,13 @@ export const getRadioChannelById = async (req, res, next) => {
     const channel = await getRadioChannelByIdService(Number(channelId));
 
     if (!channel) {
-      return res
-        .status(404)
-        .json({ status: 404, error: "채널을 찾을 수 없습니다." });
+      return res.status(HTTP_STATUS.NOT_FOUND).json({
+        status: HTTP_STATUS.NOT_FOUND,
+        error: MESSAGES.ERROR.CHANNEL_NOT_FOUND,
+      });
     }
 
-    res.status(200).json(channel);
+    res.status(HTTP_STATUS.OK).json(channel);
   } catch (error) {
     next(error);
   }

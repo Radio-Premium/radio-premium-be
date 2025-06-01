@@ -1,10 +1,12 @@
+import { HTTP_STATUS, MESSAGES } from "../constants/index.js";
+
 export const validateChannelId = (req, res, next) => {
   const { channelId } = req.params;
 
   if (Number.isNaN(Number(channelId))) {
-    return res.status(400).json({
-      status: 400,
-      error: "올바르지 않은 형식입니다.",
+    return res.status(HTTP_STATUS.BAD_REQUEST).json({
+      status: HTTP_STATUS.BAD_REQUEST,
+      error: MESSAGES.ERROR.INVALID_FORMAT,
     });
   }
 
