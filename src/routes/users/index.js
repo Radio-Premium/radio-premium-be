@@ -6,18 +6,18 @@ import {
 } from "../../controllers/users/userController.js";
 import {
   createInterestChannel,
-  getInterestChannelsById,
+  getInterestChannelById,
   updateInterestChannels,
   deleteInterestChannel,
 } from "../../controllers/users/userInterestChannelController.js";
-import { updateUserSettings } from "../../controllers/users/userSettingController.js";
+import { updateUserSettingsById } from "../../controllers/users/userSettingController.js";
 import { validateUserId } from "../../validators/userValidator.js";
 
 const router = express.Router();
 
 router.post("", createUser);
 router.get("/:userId", validateUserId, getUserById);
-router.put("/:userId/settings", validateUserId, updateUserSettings);
+router.put("/:userId/settings", validateUserId, updateUserSettingsById);
 
 router.post(
   "/:userId/interest-channels",
@@ -27,7 +27,7 @@ router.post(
 router.get(
   "/:userId/interest-channels",
   validateUserId,
-  getInterestChannelsById
+  getInterestChannelById
 );
 router.put(
   "/:userId/interest-channels",

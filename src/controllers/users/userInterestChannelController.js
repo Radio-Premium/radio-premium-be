@@ -1,8 +1,8 @@
 import {
-  registerInterestChannel,
-  findInterestChannelsById,
-  updateInterestChannelList,
-  removeInterestChannel,
+  createInterestChannel as createInterestChannelService,
+  getInterestChannelById as getInterestChannelByIdService,
+  updateInterestChannels as updateInterestChannelsService,
+  deleteInterestChannel as deleteInterestChannelService,
 } from "../../services/users/userInterestChannelService.js";
 
 export const createInterestChannel = async (req, res, next) => {
@@ -17,7 +17,7 @@ export const createInterestChannel = async (req, res, next) => {
       });
     }
 
-    const message = await registerInterestChannel(
+    const message = await createInterestChannelService(
       Number(userId),
       Number(channelId)
     );
@@ -28,10 +28,10 @@ export const createInterestChannel = async (req, res, next) => {
   }
 };
 
-export const getInterestChannelsById = async (req, res, next) => {
+export const getInterestChannelById = async (req, res, next) => {
   try {
     const { userId } = req.params;
-    const channels = await findInterestChannelsById(Number(userId));
+    const channels = await getInterestChannelByIdService(Number(userId));
 
     res.status(200).json(channels);
   } catch (error) {
@@ -51,7 +51,10 @@ export const updateInterestChannels = async (req, res, next) => {
       });
     }
 
-    const result = await updateInterestChannelList(Number(userId), channelIds);
+    const result = await updateInterestChannelsService(
+      Number(userId),
+      channelIds
+    );
     res.status(200).json(result);
   } catch (error) {
     next(error);
@@ -70,7 +73,7 @@ export const deleteInterestChannel = async (req, res, next) => {
       });
     }
 
-    const message = await removeInterestChannel(
+    const message = await deleteInterestChannelService(
       Number(userId),
       Number(channelId)
     );

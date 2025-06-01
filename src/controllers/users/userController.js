@@ -1,6 +1,6 @@
 import {
-  registerUser,
-  findUserById,
+  createUser as createUserService,
+  getUserById as getUserByIdService,
 } from "../../services/users/userService.js";
 import { stringToSnakeCase } from "../../utils/caseConverter.js";
 
@@ -26,7 +26,7 @@ export const createUser = async (req, res, next) => {
       }
     }
 
-    const message = await registerUser(insertFields);
+    const message = await createUserService(insertFields);
     res.status(201).json(message);
   } catch (error) {
     next(error);
@@ -36,7 +36,7 @@ export const createUser = async (req, res, next) => {
 export const getUserById = async (req, res, next) => {
   try {
     const { userId } = req.params;
-    const user = await findUserById(Number(userId));
+    const user = await getUserByIdService(Number(userId));
 
     if (!user) {
       return res

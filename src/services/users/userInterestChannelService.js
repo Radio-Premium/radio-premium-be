@@ -1,7 +1,7 @@
 import { toCamelCase } from "../../utils/caseConverter.js";
 import { supabase } from "../supabaseClient.js";
 
-export const registerInterestChannel = async (userId, channelId) => {
+export const createInterestChannel = async (userId, channelId) => {
   const { data: user, error: userError } = await supabase
     .from("users")
     .select("id")
@@ -71,7 +71,7 @@ export const registerInterestChannel = async (userId, channelId) => {
   return { status: 201, message: "관심 채널 등록 성공했습니다." };
 };
 
-export const findInterestChannelsById = async (userId) => {
+export const getInterestChannelById = async (userId) => {
   const { data, error } = await supabase
     .from("interest_channels")
     .select("channel_id, priority")
@@ -88,7 +88,7 @@ export const findInterestChannelsById = async (userId) => {
   return camelData;
 };
 
-export const updateInterestChannelList = async (userId, channelIds) => {
+export const updateInterestChannels = async (userId, channelIds) => {
   const { data: user, error: userError } = await supabase
     .from("users")
     .select("id")
@@ -149,7 +149,7 @@ export const updateInterestChannelList = async (userId, channelIds) => {
   return { status: 200, message: "관심 채널 갱신에 성공했습니다." };
 };
 
-export const removeInterestChannel = async (userId, channelId) => {
+export const deleteInterestChannel = async (userId, channelId) => {
   const { data: user, error: userError } = await supabase
     .from("users")
     .select("id")

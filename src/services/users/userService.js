@@ -1,7 +1,7 @@
 import { toCamelCase } from "../../utils/caseConverter.js";
 import { supabase } from "../supabaseClient.js";
 
-export const registerUser = async (insertFields) => {
+export const createUser = async (insertFields) => {
   const { data, error } = await supabase
     .from("users")
     .insert([insertFields])
@@ -18,7 +18,7 @@ export const registerUser = async (insertFields) => {
   };
 };
 
-export const findUserById = async (userId) => {
+export const getUserById = async (userId) => {
   const { data, error } = await supabase
     .from("users")
     .select(

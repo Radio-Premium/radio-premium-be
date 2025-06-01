@@ -1,11 +1,11 @@
 import {
-  findRadioChannelList,
-  findRadioChannelById,
+  getRadioChannelList as getRadioChannelListService,
+  getRadioChannelById as getRadioChannelByIdService,
 } from "../../services/radio-channels/radioChannelService.js";
 
 export const getRadioChannelList = async (_req, res, next) => {
   try {
-    const channels = await findRadioChannelList();
+    const channels = await getRadioChannelListService();
 
     return res.status(200).json(channels);
   } catch (error) {
@@ -16,7 +16,7 @@ export const getRadioChannelList = async (_req, res, next) => {
 export const getRadioChannelById = async (req, res, next) => {
   try {
     const { channelId } = req.params;
-    const channel = await findRadioChannelById(Number(channelId));
+    const channel = await getRadioChannelByIdService(Number(channelId));
 
     if (!channel) {
       return res
