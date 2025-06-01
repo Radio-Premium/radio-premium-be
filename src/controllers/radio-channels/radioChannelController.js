@@ -1,6 +1,6 @@
 import {
-  getRadioChannelList as getRadioChannelListService,
-  getRadioChannelById as getRadioChannelByIdService,
+  getRadioChannelListService,
+  getRadioChannelByIdService,
 } from "../../services/radio-channels/radioChannelService.js";
 
 export const getRadioChannelList = async (_req, res, next) => {

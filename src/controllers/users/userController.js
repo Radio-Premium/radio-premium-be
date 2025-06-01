@@ -1,6 +1,6 @@
 import {
-  createUser as createUserService,
-  getUserById as getUserByIdService,
+  createUserService,
+  getUserByIdService,
 } from "../../services/users/userService.js";
 import { stringToSnakeCase } from "../../utils/caseConverter.js";
 

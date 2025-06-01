@@ -1,8 +1,8 @@
 import {
-  createInterestChannel as createInterestChannelService,
-  getInterestChannelById as getInterestChannelByIdService,
-  updateInterestChannels as updateInterestChannelsService,
-  deleteInterestChannel as deleteInterestChannelService,
+  createInterestChannelService,
+  getInterestChannelByIdService,
+  updateInterestChannelsService,
+  deleteInterestChannelService,
 } from "../../services/users/userInterestChannelService.js";
 
 export const createInterestChannel = async (req, res, next) => {

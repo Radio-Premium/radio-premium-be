@@ -1,7 +1,7 @@
 import { toCamelCase } from "../../utils/caseConverter.js";
 import { supabase } from "../supabaseClient.js";
 
-export const getAdKeywordList = async () => {
+export const getAdKeywordListService = async () => {
   const { data, error } = await supabase.from("ad_keywords").select(
     `
       id,

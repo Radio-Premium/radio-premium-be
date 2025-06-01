@@ -1,4 +1,4 @@
-import { getAdKeywordList as getAdKeywordListService } from "../../services/ad-keywords/adKeywordService.js";
+import { getAdKeywordListService } from "../../services/ad-keywords/adKeywordService.js";
 
 export const getAdKeywordList = async (_req, res, next) => {
   try {

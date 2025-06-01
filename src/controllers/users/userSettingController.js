@@ -1,5 +1,5 @@
-import { getUserById } from "../../services/users/userService.js";
-import { updateUserSettingsById as updateUserSettingsByIdService } from "../../services/users/userSettingService.js";
+import { getUserByIdService } from "../../services/users/userService.js";
+import { updateUserSettingsByIdService } from "../../services/users/userSettingService.js";
 import { stringToSnakeCase } from "../../utils/caseConverter.js";
 
 export const updateUserSettingsById = async (req, res, next) => {
@@ -32,7 +32,7 @@ export const updateUserSettingsById = async (req, res, next) => {
       });
     }
 
-    const user = await getUserById(Number(userId));
+    const user = await getUserByIdService(Number(userId));
     if (!user) {
       return res
         .status(404)

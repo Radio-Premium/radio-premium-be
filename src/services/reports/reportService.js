@@ -1,7 +1,7 @@
 import { toCamelCase } from "../../utils/caseConverter.js";
 import { supabase } from "../supabaseClient.js";
 
-export const createAdReport = async ({
+export const createAdReportService = async ({
   userId,
   isAd,
   detectedAdPhrase,
