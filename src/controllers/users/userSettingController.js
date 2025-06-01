@@ -1,8 +1,8 @@
-import { findUserById } from "../services/userService.js";
-import { updateUserSettingById } from "../services/userSettingService.js";
-import { stringToSnakeCase } from "../utils/caseConverter.js";
+import { getUserByIdService } from "../../services/users/userService.js";
+import { updateUserSettingsByIdService } from "../../services/users/userSettingService.js";
+import { stringToSnakeCase } from "../../utils/caseConverter.js";
 
-export const updateUserSettings = async (req, res, next) => {
+export const updateUserSettingsById = async (req, res, next) => {
   try {
     const { userId } = req.params;
     const reqSettingFields = ["isAdDetect", "isReturnChannel"];
@@ -32,14 +32,17 @@ export const updateUserSettings = async (req, res, next) => {
       });
     }
 
-    const user = await findUserById(Number(userId));
+    const user = await getUserByIdService(Number(userId));
     if (!user) {
       return res
         .status(404)
         .json({ status: 404, error: "사용자를 찾을 수 없습니다." });
     }
 
-    const message = await updateUserSettingById(Number(userId), updateFields);
+    const message = await updateUserSettingsByIdService(
+      Number(userId),
+      updateFields
+    );
     res.status(200).json(message);
   } catch (error) {
     next(error);

@@ -1,10 +1,10 @@
-import { createAdReport } from "../services/reportService.js";
+import { createAdReportService } from "../../services/reports/reportService.js";
 
-export const postAdReport = async (req, res, next) => {
+export const createAdReport = async (req, res, next) => {
   try {
     const { userId, isAd, detectedAdPhrase, channelId } = req.body;
 
-    const result = await createAdReport({
+    const result = await createAdReportService({
       userId,
       isAd,
       detectedAdPhrase,

@@ -3,10 +3,8 @@ import express from "express";
 
 import { errorHandler } from "./middlewares/errorHandler.js";
 import adKeywordRoutes from "./routes/ad-keywords/index.js";
-import radioChannelRoutes from "./routes/radio-channels/[channelId].js";
-import radioRoutes from "./routes/radio-channels/allRadioList.js";
-import reportRouter from "./routes/report/createReport.js";
-import userIdRoutes from "./routes/users/[userId].js";
+import radioChannelRoutes from "./routes/radio-channels/index.js";
+import reportRoutes from "./routes/reports/index.js";
 import userRoutes from "./routes/users/index.js";
 
 dotenv.config();
@@ -15,12 +13,10 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/reports", reportRouter);
-app.use("/users", userIdRoutes);
-app.use("/users", userRoutes);
-app.use("/radio-channels", radioChannelRoutes);
-app.use("/radio-channels", radioRoutes);
 app.use("/ad-keywords", adKeywordRoutes);
+app.use("/users", userRoutes);
+app.use("/reports", reportRoutes);
+app.use("/radio-channels", radioChannelRoutes);
 
 app.use(errorHandler);
 

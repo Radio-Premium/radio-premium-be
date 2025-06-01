@@ -1,7 +1,7 @@
-import { supabase } from "./supabaseClient.js";
-import { toCamelCase } from "../utils/caseConverter.js";
+import { toCamelCase } from "../../utils/caseConverter.js";
+import { supabase } from "../supabaseClient.js";
 
-export const findRadioChannelList = async () => {
+export const getRadioChannelListService = async () => {
   const { data, error } = await supabase.from("channels").select(
     `
     id,
@@ -29,7 +29,7 @@ export const findRadioChannelList = async () => {
   return camelData;
 };
 
-export const findRadioChannelById = async (channelId) => {
+export const getRadioChannelByIdService = async (channelId) => {
   const { data, error } = await supabase
     .from("channels")
     .select(
