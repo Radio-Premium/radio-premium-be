@@ -1,3 +1,5 @@
+import http from "http";
+
 import dotenv from "dotenv";
 import express from "express";
 
@@ -6,11 +8,11 @@ import adKeywordRoutes from "./routes/ad-keywords/index.js";
 import radioChannelRoutes from "./routes/radio-channels/index.js";
 import reportRoutes from "./routes/reports/index.js";
 import userRoutes from "./routes/users/index.js";
+import { initSocket } from "./sockets/index.js";
 
 dotenv.config();
 
 const app = express();
-
 app.use(express.json());
 
 app.use("/ad-keywords", adKeywordRoutes);
@@ -20,7 +22,10 @@ app.use("/radio-channels", radioChannelRoutes);
 
 app.use(errorHandler);
 
+const server = http.createServer(app);
+initSocket(server);
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
