@@ -9,7 +9,7 @@ const registerRadioTextHandler = (socket) => {
   }, 5000);
 
   socket.on("disconnect", () => {
-    console.log("Client disconnectd");
+    console.log("Client disconnected");
     clearInterval(intervalId);
   });
 
