@@ -1,3 +1,5 @@
+import { HTTP_STATUS, MESSAGES } from "../constants/index.js";
+
 export const validateReportBody = (req, res, next) => {
   const { userId, isAd, detectedAdPhrase, channelId } = req.body || {};
 
@@ -8,9 +10,9 @@ export const validateReportBody = (req, res, next) => {
     typeof channelId !== "number";
 
   if (isInvalidFormat) {
-    return res.status(400).json({
-      status: 400,
-      error: "올바르지 않은 형식입니다.",
+    return res.status(HTTP_STATUS.BAD_REQUEST).json({
+      status: HTTP_STATUS.BAD_REQUEST,
+      error: MESSAGES.ERROR.INVALID_FORMAT,
     });
   }
 

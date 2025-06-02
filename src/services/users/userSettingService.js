@@ -1,3 +1,4 @@
+import { HTTP_STATUS, MESSAGES } from "../../constants/index.js";
 import { supabase } from "../supabaseClient.js";
 
 export const updateUserSettingsByIdService = async (userId, updateFields) => {
@@ -8,11 +9,11 @@ export const updateUserSettingsByIdService = async (userId, updateFields) => {
 
   if (error) {
     console.error("Supabase update error:", error);
-    throw new Error("Supabase update failed");
+    throw new Error(MESSAGES.ERROR.SUPABASE_UPDATE_FAILED);
   }
 
   return {
-    status: 200,
-    message: "사용자 설정이 성공적으로 변경되었습니다.",
+    status: HTTP_STATUS.OK,
+    message: MESSAGES.SUCCESS.USER_SETTINGS_UPDATED,
   };
 };

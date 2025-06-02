@@ -1,3 +1,4 @@
+import { HTTP_STATUS, MESSAGES } from "../../constants/index.js";
 import { toCamelCase } from "../../utils/caseConverter.js";
 import { supabase } from "../supabaseClient.js";
 
@@ -8,12 +9,12 @@ export const createUserService = async (insertFields) => {
     .select();
 
   if (error && !data) {
-    throw new Error("Supabase insert failed");
+    throw new Error(MESSAGES.ERROR.SUPABASE_INSERT_FAILED);
   }
 
   return {
-    status: 201,
-    message: "사용자 등록 성공했습니다.",
+    status: HTTP_STATUS.CREATED,
+    message: MESSAGES.SUCCESS.USER_CREATED,
     userId: data?.[0]?.id,
   };
 };
@@ -37,7 +38,7 @@ export const getUserByIdService = async (userId) => {
 
   if (error) {
     console.error("Supabase error:", error);
-    throw new Error("Supabase query failed");
+    throw new Error(MESSAGES.ERROR.SUPABASE_QUERY_FAILED);
   }
 
   if (!data) {

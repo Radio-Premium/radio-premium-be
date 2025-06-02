@@ -1,3 +1,4 @@
+import { HTTP_STATUS, MESSAGES } from "../../constants/index.js";
 import { toCamelCase } from "../../utils/caseConverter.js";
 import { supabase } from "../supabaseClient.js";
 
@@ -9,10 +10,13 @@ export const createInterestChannelService = async (userId, channelId) => {
     .maybeSingle();
 
   if (userError) {
-    throw new Error("Supabase query failed: user check");
+    throw new Error(`${MESSAGES.ERROR.SUPABASE_QUERY_FAILED}: user check`);
   }
   if (!user) {
-    return { status: 404, error: "사용자를 찾을 수 없습니다." };
+    return {
+      status: HTTP_STATUS.NOT_FOUND,
+      error: MESSAGES.ERROR.USER_NOT_FOUND,
+    };
   }
 
   const { data: channel, error: channelError } = await supabase
@@ -22,10 +26,13 @@ export const createInterestChannelService = async (userId, channelId) => {
     .maybeSingle();
 
   if (channelError) {
-    throw new Error("Supabase query failed: channel check");
+    throw new Error(`${MESSAGES.ERROR.SUPABASE_QUERY_FAILED}: channel check`);
   }
   if (!channel) {
-    return { status: 404, error: "채널을 찾을 수 없습니다." };
+    return {
+      status: HTTP_STATUS.NOT_FOUND,
+      error: MESSAGES.ERROR.CHANNEL_NOT_FOUND,
+    };
   }
 
   const { data: existingInterest } = await supabase
@@ -36,7 +43,10 @@ export const createInterestChannelService = async (userId, channelId) => {
     .maybeSingle();
 
   if (existingInterest) {
-    return { status: 400, error: "이미 등록된 관심 채널입니다." };
+    return {
+      status: HTTP_STATUS.BAD_REQUEST,
+      error: MESSAGES.ERROR.INTEREST_CHANNEL_EXISTS,
+    };
   }
 
   const { data: interestList, error: priorityError } = await supabase
@@ -47,7 +57,7 @@ export const createInterestChannelService = async (userId, channelId) => {
     .limit(1);
 
   if (priorityError) {
-    throw new Error("Supabase query failed: priority check");
+    throw new Error(`${MESSAGES.ERROR.SUPABASE_QUERY_FAILED}: priority check`);
   }
 
   const currentMaxPriority = interestList?.[0]?.priority;
@@ -65,10 +75,13 @@ export const createInterestChannelService = async (userId, channelId) => {
     ]);
 
   if (insertError) {
-    throw new Error("Supabase insert failed");
+    throw new Error(MESSAGES.ERROR.SUPABASE_INSERT_FAILED);
   }
 
-  return { status: 201, message: "관심 채널 등록 성공했습니다." };
+  return {
+    status: HTTP_STATUS.CREATED,
+    message: MESSAGES.SUCCESS.INTEREST_CHANNEL_CREATED,
+  };
 };
 
 export const getInterestChannelByIdService = async (userId) => {
@@ -79,8 +92,7 @@ export const getInterestChannelByIdService = async (userId) => {
     .order("priority", { ascending: true });
 
   if (error) {
-    console.error("Supabase error:", error);
-    throw new Error("Supabase query failed");
+    throw new Error(MESSAGES.ERROR.SUPABASE_QUERY_FAILED);
   }
 
   const camelData = toCamelCase(data);
@@ -96,10 +108,13 @@ export const updateInterestChannelsService = async (userId, channelIds) => {
     .maybeSingle();
 
   if (userError) {
-    throw new Error("Supabase query failed: user check");
+    throw new Error(`${MESSAGES.ERROR.SUPABASE_QUERY_FAILED}: user check`);
   }
   if (!user) {
-    return { status: 404, error: "사용자를 찾을 수 없습니다." };
+    return {
+      status: HTTP_STATUS.NOT_FOUND,
+      error: MESSAGES.ERROR.USER_NOT_FOUND,
+    };
   }
 
   const { data: validChannels, error: channelError } = await supabase
@@ -108,7 +123,7 @@ export const updateInterestChannelsService = async (userId, channelIds) => {
     .in("id", channelIds);
 
   if (channelError) {
-    throw new Error("Supabase query failed: channel check");
+    throw new Error(`${MESSAGES.ERROR.SUPABASE_QUERY_FAILED}: channel check`);
   }
 
   const validChannelIds = validChannels.map((channel) => channel.id);
@@ -118,8 +133,8 @@ export const updateInterestChannelsService = async (userId, channelIds) => {
 
   if (invalidChannelIds.length > 0) {
     return {
-      status: 404,
-      error: "존재하지 않는 채널이 포함되어 있습니다.",
+      status: HTTP_STATUS.NOT_FOUND,
+      error: MESSAGES.ERROR.INVALID_CHANNELS,
     };
   }
 
@@ -129,7 +144,7 @@ export const updateInterestChannelsService = async (userId, channelIds) => {
     .eq("user_id", userId);
 
   if (deleteError) {
-    throw new Error("Supabase delete failed");
+    throw new Error(MESSAGES.ERROR.SUPABASE_DELETE_FAILED);
   }
 
   const insertData = channelIds.map((id, index) => ({
@@ -143,10 +158,13 @@ export const updateInterestChannelsService = async (userId, channelIds) => {
     .insert(insertData);
 
   if (insertError) {
-    throw new Error("Supabase insert failed");
+    throw new Error(MESSAGES.ERROR.SUPABASE_INSERT_FAILED);
   }
 
-  return { status: 200, message: "관심 채널 갱신에 성공했습니다." };
+  return {
+    status: HTTP_STATUS.OK,
+    message: MESSAGES.SUCCESS.INTEREST_CHANNELS_UPDATED,
+  };
 };
 
 export const deleteInterestChannelService = async (userId, channelId) => {
@@ -157,10 +175,13 @@ export const deleteInterestChannelService = async (userId, channelId) => {
     .maybeSingle();
 
   if (userError) {
-    throw new Error("Supabase query failed: user check");
+    throw new Error(`${MESSAGES.ERROR.SUPABASE_QUERY_FAILED}: user check`);
   }
   if (!user) {
-    return { status: 404, error: "사용자를 찾을 수 없습니다." };
+    return {
+      status: HTTP_STATUS.NOT_FOUND,
+      error: MESSAGES.ERROR.USER_NOT_FOUND,
+    };
   }
 
   const { data: channel, error: channelError } = await supabase
@@ -170,10 +191,13 @@ export const deleteInterestChannelService = async (userId, channelId) => {
     .maybeSingle();
 
   if (channelError) {
-    throw new Error("Supabase query failed: channel check");
+    throw new Error(`${MESSAGES.ERROR.SUPABASE_QUERY_FAILED}: channel check`);
   }
   if (!channel) {
-    return { status: 404, error: "채널을 찾을 수 없습니다." };
+    return {
+      status: HTTP_STATUS.NOT_FOUND,
+      error: MESSAGES.ERROR.CHANNEL_NOT_FOUND,
+    };
   }
 
   const { data: interest, error: interestError } = await supabase
@@ -184,10 +208,13 @@ export const deleteInterestChannelService = async (userId, channelId) => {
     .maybeSingle();
 
   if (interestError) {
-    throw new Error("Supabase query failed: interest check");
+    throw new Error(`${MESSAGES.ERROR.SUPABASE_QUERY_FAILED}: interest check`);
   }
   if (!interest) {
-    return { status: 404, error: "등록된 관심 채널이 없습니다." };
+    return {
+      status: HTTP_STATUS.NOT_FOUND,
+      error: MESSAGES.ERROR.INTEREST_CHANNEL_NOT_FOUND,
+    };
   }
 
   const removedPriority = interest.priority;
@@ -199,7 +226,7 @@ export const deleteInterestChannelService = async (userId, channelId) => {
     .eq("channel_id", channelId);
 
   if (deleteError) {
-    throw new Error("Supabase delete failed");
+    throw new Error(MESSAGES.ERROR.SUPABASE_DELETE_FAILED);
   }
 
   const { data: channelsToUpdate, error: selectError } = await supabase
@@ -209,7 +236,7 @@ export const deleteInterestChannelService = async (userId, channelId) => {
     .gt("priority", removedPriority);
 
   if (selectError) {
-    throw new Error("Supabase query failed: reorder");
+    throw new Error(`${MESSAGES.ERROR.SUPABASE_QUERY_FAILED}: reorder`);
   }
 
   for (const item of channelsToUpdate) {
@@ -220,5 +247,8 @@ export const deleteInterestChannelService = async (userId, channelId) => {
       .eq("channel_id", item.channel_id);
   }
 
-  return { status: 200, message: "관심 채널 삭제 성공했습니다." };
+  return {
+    status: HTTP_STATUS.OK,
+    message: MESSAGES.SUCCESS.INTEREST_CHANNEL_DELETED,
+  };
 };
