@@ -61,10 +61,49 @@ export const getRadioChannelByIdService = async (channelId) => {
   }
 
   const camelData = toCamelCase(data);
+  const streamingUrl = await getRadioChannelUrlService(camelData);
 
   return {
     ...camelData,
     userId: camelData.id,
     areaName: camelData.areas?.name,
+    url: streamingUrl,
   };
+};
+
+export const getRadioChannelUrlService = async ({
+  isApiExposed,
+  url,
+  station,
+}) => {
+  if (!isApiExposed) {
+    return url;
+  }
+
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(MESSAGES.STATION_FAILED);
+  }
+
+  let result;
+
+  switch (station) {
+    case "KBS": {
+      const json = await response.json();
+      result = json.channel_item[0].service_url;
+      break;
+    }
+    case "MBC":
+    case "SBS": {
+      result = await response.text();
+      break;
+    }
+    default: {
+      result = url;
+      break;
+    }
+  }
+
+  return result;
 };

@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 
-import registerSocketHandler from "./handlers";
+import registerSocketHandler from "./handlers/index.js";
 
 export const initSocket = (server) => {
   const io = new Server(server, {
