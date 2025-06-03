@@ -15,6 +15,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-node@v3
         with:
           node-version: 22.11.0
@@ -26,6 +27,10 @@ jobs:
       - name: Zip application
         run: zip -r deploy.zip . -x '*.git*' '*.github*' '*.DS_Store'
 
+      - name: Set short SHA
+        id: vars
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v20
         with:
@@ -34,5 +39,5 @@ jobs:
           application_name: "MuteFM-RadioPremium"
           environment_name: "MuteFM-RadioPremium-env"
           region: "ap-northeast-2"
-          version_label: radio-premium-${{ github.sha.substring(0, 7) }}-${{ github.run_number }}
+          version_label: radio-premium-${{ env.SHORT_SHA }}-${{ github.run_number }}
           zip_file: "deploy.zip"
