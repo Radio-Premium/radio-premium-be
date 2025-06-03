@@ -34,5 +34,5 @@ jobs:
           application_name: "MuteFM-RadioPremium"
           environment_name: "MuteFM-RadioPremium-env"
           region: "ap-northeast-2"
-          version_label: radio-premium-${{ github.sha::7 }}-${{ github.run_number }}
+          version_label: radio-premium-${{ github.sha.substring(0, 7) }}-${{ github.run_number }}
           zip_file: "deploy.zip"
