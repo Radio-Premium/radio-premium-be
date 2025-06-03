@@ -71,12 +71,16 @@ export const getRadioChannelByIdService = async (channelId) => {
   };
 };
 
-export const getRadioChannelUrlService = async (data) => {
-  if (!data.isApiExposed) {
-    return data.url;
+export const getRadioChannelUrlService = async ({
+  isApiExposed,
+  url,
+  station,
+}) => {
+  if (!isApiExposed) {
+    return url;
   }
 
-  const response = await fetch(data.url);
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error(MESSAGES.STATION_FAILED);
@@ -84,7 +88,7 @@ export const getRadioChannelUrlService = async (data) => {
 
   let result;
 
-  switch (data.station) {
+  switch (station) {
     case "KBS": {
       const json = await response.json();
       result = json.channel_item[0].service_url;
@@ -96,7 +100,7 @@ export const getRadioChannelUrlService = async (data) => {
       break;
     }
     default: {
-      result = data.url;
+      result = url;
       break;
     }
   }
