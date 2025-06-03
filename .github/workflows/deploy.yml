@@ -1,0 +1,38 @@
+name: Deploy to Elastic Beanstalk
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22.11.0
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Zip application
+        run: zip -r deploy.zip . -x '*.git*' '*.github*' '*.DS_Store'
+
+      - name: Deploy to Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v20
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: "MuteFM-RadioPremium"
+          environment_name: "MuteFM-RadioPremium-env"
+          region: "ap-northeast-2"
+          version_label: radio-premium-${{ github.sha::7 }}-${{ github.run_number }}
+          zip_file: "deploy.zip"
