@@ -14,6 +14,7 @@ export const MESSAGES = {
     INTEREST_CHANNEL_EXISTS: "이미 등록된 관심 채널입니다.",
     INTEREST_CHANNEL_NOT_FOUND: "등록된 관심 채널이 없습니다.",
     INVALID_CHANNELS: "존재하지 않는 채널이 포함되어 있습니다.",
+    STATION_FAILED: "방송사와의 통신에 실패했습니다.",
     SUPABASE_QUERY_FAILED: "Supabase query failed",
     SUPABASE_INSERT_FAILED: "Supabase insert failed",
     SUPABASE_DELETE_FAILED: "Supabase delete failed",
