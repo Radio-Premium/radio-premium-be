@@ -77,6 +77,11 @@ export const getRadioChannelUrlService = async (data) => {
   }
 
   const response = await fetch(data.url);
+
+  if (!response.ok) {
+    throw new Error(MESSAGES.STATION_FAILED);
+  }
+
   let result;
 
   switch (data.station) {
