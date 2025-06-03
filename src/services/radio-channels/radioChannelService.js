@@ -60,19 +60,19 @@ export const getRadioChannelByIdService = async (channelId) => {
     return null;
   }
 
-  data.url = await getRadioChannelUrlService(data);
-
   const camelData = toCamelCase(data);
+  const streamingUrl = await getRadioChannelUrlService(camelData);
 
   return {
     ...camelData,
     userId: camelData.id,
     areaName: camelData.areas?.name,
+    url: streamingUrl,
   };
 };
 
 export const getRadioChannelUrlService = async (data) => {
-  if (!data.is_api_exposed) {
+  if (!data.isApiExposed) {
     return data.url;
   }
 
