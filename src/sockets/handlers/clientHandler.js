@@ -1,7 +1,7 @@
 import registerRadioTextHandler from "./radioTextHandler.js";
 
-const registerSocketHandler = (socket) => {
+const registerClientHandlers = (socket) => {
   registerRadioTextHandler(socket);
 };
 
-export default registerSocketHandler;
+export default registerClientHandlers;
