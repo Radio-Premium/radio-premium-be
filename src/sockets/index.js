@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
 
-import registerSocketHandler from "./handlers/index.js";
+import registerClientHandlers from "./handlers/clientHandler.js";
+import registerWhisperHandlers from "./handlers/whisperHandler.js";
 
 export const initSocket = (server) => {
   const io = new Server(server, {
@@ -12,6 +13,11 @@ export const initSocket = (server) => {
 
   io.on("connection", (socket) => {
     console.log("Client connected");
-    registerSocketHandler(socket);
+    registerClientHandlers(socket);
+  });
+
+  io.of("/whisper").on("connection", (socket) => {
+    console.log("Whisper connected");
+    registerWhisperHandlers(socket);
   });
 };
