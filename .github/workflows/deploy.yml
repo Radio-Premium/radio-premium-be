@@ -33,7 +33,7 @@ jobs:
       - name: Zip application
         run: |
           mkdir -p build
-          zip -r build/deploy.zip . -x '*.git*' '*.github*' '*.DS_Store'
+          zip -r build/deploy.zip . -x "**/node_modules/*" "**/.git*" "**/.github*" "**/.DS_Store"
 
       - name: Set short SHA
         id: vars
