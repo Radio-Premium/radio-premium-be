@@ -15,7 +15,7 @@ export const getRadioChannelListService = async () => {
       logo_url,
       is_ad_channel,
       created_at
-      `
+    `
   );
 
   if (error) {
