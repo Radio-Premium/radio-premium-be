@@ -1,6 +1,6 @@
 import { MESSAGES } from "../../constants/index.js";
 import { toCamelCase } from "../../utils/caseConverter.js";
-import { sendStreamUrlToWhisper } from "../../utils/sendStreamUrlToWhisper.js";
+import { sendStreamingUrlToWhisper } from "../../utils/sendStreamingUrlToWhisper.js";
 import { supabase } from "../supabaseClient.js";
 
 export const getRadioChannelListService = async () => {
@@ -63,7 +63,7 @@ export const getRadioChannelByIdService = async (channelId) => {
 
   const camelData = toCamelCase(data);
   const streamingUrl = await getRadioChannelUrlService(camelData);
-  sendStreamUrlToWhisper(streamingUrl);
+  sendStreamingUrlToWhisper(streamingUrl);
 
   return {
     ...camelData,
