@@ -1,4 +1,4 @@
-import { getAdKeywords } from "../cache/adKeywordCache.js";
+import { getAdKeywords } from "../../cache/adKeywordCache.js";
 
 const transcribedTextHandler = (whisperSocket, io) => {
   whisperSocket.on("transcribedRadioText", ({ text }) => {
