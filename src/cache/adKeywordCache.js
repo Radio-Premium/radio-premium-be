@@ -1,9 +1,7 @@
 const cachedAdKeywords = [];
 
 export const setAdKeywords = (keywords) => {
-  keywords.map((keyword) => {
-    cachedAdKeywords.push(keyword);
-  });
+  cachedAdKeywords.splice(0, cachedAdKeywords.length, ...keywords);
 };
 
 export const getAdKeywords = () => cachedAdKeywords;
