@@ -18,6 +18,6 @@ export const initSocket = (server) => {
 
   io.of("/whisper").on("connection", (socket) => {
     console.log("Whisper connected");
-    registerWhisperHandlers(socket);
+    registerWhisperHandlers(socket, io);
   });
 };
