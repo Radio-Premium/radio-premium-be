@@ -6,15 +6,16 @@ import { supabase } from "../supabaseClient.js";
 export const getRadioChannelListService = async () => {
   const { data, error } = await supabase.from("channels").select(
     `
-    id,
-    station,
-    name,
-    area_id,
-    url,
-    is_api_exposed,
-    logo_url,
-    created_at
-    `
+      id,
+      station,
+      name,
+      area_id,
+      url,
+      is_api_exposed,
+      logo_url,
+      is_ad_channel,
+      created_at
+      `
   );
 
   if (error) {
@@ -43,6 +44,7 @@ export const getRadioChannelByIdService = async (channelId) => {
       url,
       is_api_exposed,
       logo_url,
+      is_ad_channel,
       created_at,
       areas (
         name
