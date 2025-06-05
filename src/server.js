@@ -3,6 +3,7 @@ import http from "http";
 import dotenv from "dotenv";
 import express from "express";
 
+import { loadAdKeywords } from "./init/loadAdKeywords.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import adKeywordRoutes from "./routes/ad-keywords/index.js";
 import radioChannelRoutes from "./routes/radio-channels/index.js";
@@ -21,6 +22,8 @@ app.use("/reports", reportRoutes);
 app.use("/radio-channels", radioChannelRoutes);
 
 app.use(errorHandler);
+
+await loadAdKeywords();
 
 const server = http.createServer(app);
 initSocket(server);
