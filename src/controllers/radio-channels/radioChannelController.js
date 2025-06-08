@@ -17,7 +17,12 @@ export const getRadioChannelList = async (_req, res, next) => {
 export const getRadioChannelById = async (req, res, next) => {
   try {
     const { channelId } = req.params;
-    const channel = await getRadioChannelByIdService(Number(channelId));
+    const isAdDetect = req.query.isAdDetect === "true";
+
+    const channel = await getRadioChannelByIdService(
+      Number(channelId),
+      isAdDetect
+    );
 
     if (!channel) {
       return res.status(HTTP_STATUS.NOT_FOUND).json({
