@@ -2,7 +2,7 @@ import { HTTP_STATUS, MESSAGES } from "../../constants/index.js";
 import {
   getRadioChannelListService,
   getRadioChannelByIdService,
-  getRandomAdChannelService,
+  getRandomNoAdChannelService,
 } from "../../services/radio-channels/radioChannelService.js";
 
 export const getRadioChannelList = async (_req, res, next) => {
@@ -38,9 +38,9 @@ export const getRadioChannelById = async (req, res, next) => {
   }
 };
 
-export const getRandomAdChannel = async (_req, res, next) => {
+export const getRandomNoAdChannel = async (_req, res, next) => {
   try {
-    const randomChannel = await getRandomAdChannelService();
+    const randomChannel = await getRandomNoAdChannelService();
 
     if (!randomChannel) {
       return res.status(HTTP_STATUS.NOT_FOUND).json({

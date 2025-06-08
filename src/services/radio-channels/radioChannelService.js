@@ -114,7 +114,7 @@ export const getRadioChannelUrlService = async ({
   return result;
 };
 
-export const getRandomAdChannelService = async () => {
+export const getRandomNoAdChannelService = async () => {
   const { data, error } = await supabase
     .from("channels")
     .select(
