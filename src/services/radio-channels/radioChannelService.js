@@ -113,3 +113,45 @@ export const getRadioChannelUrlService = async ({
 
   return result;
 };
+
+export const getRandomNoAdChannelService = async () => {
+  const { data, error } = await supabase
+    .from("channels")
+    .select(
+      `
+      id,
+      station,
+      name,
+      area_id,
+      url,
+      is_api_exposed,
+      logo_url,
+      is_ad_channel,
+      created_at,
+      areas (
+        name
+      )
+      `
+    )
+    .eq("is_ad_channel", false);
+
+  if (error) {
+    console.error("Supabase error:", error);
+    throw new Error(MESSAGES.ERROR.SUPABASE_QUERY_FAILED);
+  }
+
+  if (!data || data.length === 0) {
+    return null;
+  }
+
+  const randomIndex = Math.floor(Math.random() * data.length);
+  const randomChannel = data[randomIndex];
+  const camelData = toCamelCase(randomChannel);
+  const streamingUrl = await getRadioChannelUrlService(camelData);
+
+  return {
+    ...camelData,
+    areaName: camelData.areas?.name,
+    url: streamingUrl,
+  };
+};
