@@ -4,10 +4,9 @@ import { getUserByIdService } from "../../services/users/userService.js";
 let isAdPlaying = false;
 let adEndTimers = new Map();
 
-const transcribedTextHandler = (whisperSocket, io, userMap) => {
-  whisperSocket.off("transcribedRadioText");
-
-  whisperSocket.on("transcribedRadioText", async ({ text, userId }) => {
+const handleTranscribedText =
+  (io, userMap) =>
+  async ({ text, userId }) => {
     console.log("[Whisper] Received text:", text);
     const socketId = userMap.get(userId);
     if (!socketId) return;
@@ -47,7 +46,13 @@ const transcribedTextHandler = (whisperSocket, io, userMap) => {
 
       adEndTimers.set(userId, timer);
     }
-  });
+  };
+
+const transcribedTextHandler = (whisperSocket, io, userMap) => {
+  const listener = handleTranscribedText(io, userMap);
+
+  whisperSocket.off("transcribedRadioText", listener);
+  whisperSocket.on("transcribedRadioText", listener);
 
   whisperSocket.on("disconnect", () => {
     console.log("Whisper disconnected");
