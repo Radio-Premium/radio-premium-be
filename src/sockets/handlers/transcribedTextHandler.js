@@ -1,20 +1,60 @@
 import { getAdKeywords } from "../../cache/adKeywordCache.js";
+import { getUserByIdService } from "../../services/users/userService.js";
 
-const transcribedTextHandler = (whisperSocket, io, userMap) => {
-  whisperSocket.off("transcribedRadioText");
+let isAdPlaying = false;
+const userAdEndTimers = new Map();
 
-  whisperSocket.on("transcribedRadioText", ({ text, userId }) => {
+const handleTranscribedText =
+  (io, userMap) =>
+  async ({ text, userId }) => {
     console.log("[Whisper] Received text:", text);
     const socketId = userMap.get(userId);
+    if (!socketId) {
+      return;
+    }
 
-    const keywords = getAdKeywords();
-    const matched = keywords.find((keyword) => text.includes(keyword));
+    const keywordList = getAdKeywords();
+    const matched = keywordList.find(({ keyword }) => text.includes(keyword));
 
     if (matched) {
-      console.log(`🔔 광고 키워드 감지: "${matched}"`);
-      io.to(socketId).emit("radioText", { isAd: true });
+      if (!isAdPlaying) {
+        io.to(socketId).emit("radioText", { isAd: true });
+        isAdPlaying = true;
+      }
+
+      if (userAdEndTimers.has(userId)) {
+        clearTimeout(userAdEndTimers.get(userId));
+        userAdEndTimers.delete(userId);
+      }
+
+      return;
     }
-  });
+
+    if (isAdPlaying && !userAdEndTimers.has(userId)) {
+      const timer = setTimeout(async () => {
+        try {
+          const user = await getUserByIdService(userId);
+
+          if (user.isReturnChannel) {
+            io.to(socketId).emit("radioText", { isAd: false });
+          }
+
+          isAdPlaying = false;
+          userAdEndTimers.delete(userId);
+        } catch (error) {
+          console.error("Failed to fetch user information", error);
+        }
+      }, 5000);
+
+      userAdEndTimers.set(userId, timer);
+    }
+  };
+
+const transcribedTextHandler = (whisperSocket, io, userMap) => {
+  const listener = handleTranscribedText(io, userMap);
+
+  whisperSocket.off("transcribedRadioText", listener);
+  whisperSocket.on("transcribedRadioText", listener);
 
   whisperSocket.on("disconnect", () => {
     console.log("Whisper disconnected");

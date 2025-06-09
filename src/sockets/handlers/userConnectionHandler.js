@@ -1,10 +1,15 @@
 const registerUserConnectionHandler = (socket, userMap) => {
+  let currentUserId = null;
+
   socket.on("registerUser", ({ userId }) => {
+    currentUserId = userId;
     userMap.set(userId, socket.id);
   });
 
   socket.on("disconnect", () => {
-    userMap.delete(socket.id);
+    if (currentUserId) {
+      userMap.delete(currentUserId);
+    }
   });
 };
 
