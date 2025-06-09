@@ -10,6 +10,7 @@ const transcribedTextHandler = (whisperSocket, io, userMap) => {
   whisperSocket.on("transcribedRadioText", async ({ text, userId }) => {
     console.log("[Whisper] Received text:", text);
     const socketId = userMap.get(userId);
+    if (!socketId) return;
 
     const keywords = getAdKeywords();
     const matched = keywords.find((keyword) => text.includes(keyword));
