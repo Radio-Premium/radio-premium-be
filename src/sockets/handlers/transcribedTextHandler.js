@@ -1,5 +1,5 @@
 import { getAdKeywords } from "../../cache/adKeywordCache.js";
-import { getUserByIdService } from "../../services/users/index.js";
+import { getUserByIdService } from "../../services/users/userService.js";
 
 let isAdPlaying = false;
 let adEndTimers = new Map();
