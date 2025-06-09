@@ -9,7 +9,9 @@ const handleTranscribedText =
   async ({ text, userId }) => {
     console.log("[Whisper] Received text:", text);
     const socketId = userMap.get(userId);
-    if (!socketId) return;
+    if (!socketId) {
+      return;
+    }
 
     const keywordList = getAdKeywords();
     const matched = keywordList.find(({ keyword }) => text.includes(keyword));
