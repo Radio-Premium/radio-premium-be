@@ -32,7 +32,11 @@ export const getRadioChannelListService = async () => {
   return camelData;
 };
 
-export const getRadioChannelByIdService = async (channelId, isAdDetect) => {
+export const getRadioChannelByIdService = async (
+  channelId,
+  isAdDetect,
+  userId
+) => {
   const { data, error } = await supabase
     .from("channels")
     .select(
@@ -66,7 +70,7 @@ export const getRadioChannelByIdService = async (channelId, isAdDetect) => {
   const camelData = toCamelCase(data);
   const streamingUrl = await getRadioChannelUrlService(camelData);
   if (isAdDetect) {
-    sendStreamingUrlToWhisper(streamingUrl);
+    sendStreamingUrlToWhisper(streamingUrl, userId);
   }
 
   return {

@@ -1,7 +1,7 @@
-import registerRadioTextHandler from "./radioTextHandler.js";
+import registerUserConnectionHandler from "./userConnectionHandler.js";
 
-const registerClientHandlers = (socket) => {
-  registerRadioTextHandler(socket);
+const registerClientHandlers = (socket, userMap) => {
+  registerUserConnectionHandler(socket, userMap);
 };
 
 export default registerClientHandlers;

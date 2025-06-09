@@ -19,10 +19,12 @@ export const getRadioChannelById = async (req, res, next) => {
   try {
     const { channelId } = req.params;
     const isAdDetect = req.query.isAdDetect === "true";
+    const userId = req.query.userId;
 
     const channel = await getRadioChannelByIdService(
       Number(channelId),
-      isAdDetect
+      isAdDetect,
+      userId
     );
 
     if (!channel) {
