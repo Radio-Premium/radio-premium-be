@@ -2,7 +2,7 @@ import { getAdKeywords } from "../../cache/adKeywordCache.js";
 import { getUserByIdService } from "../../services/users/userService.js";
 
 let isAdPlaying = false;
-let adEndTimers = new Map();
+const userAdEndTimers = new Map();
 
 const handleTranscribedText =
   (io, userMap) =>
@@ -22,15 +22,15 @@ const handleTranscribedText =
         isAdPlaying = true;
       }
 
-      if (adEndTimers.has(userId)) {
-        clearTimeout(adEndTimers.get(userId));
-        adEndTimers.delete(userId);
+      if (userAdEndTimers.has(userId)) {
+        clearTimeout(userAdEndTimers.get(userId));
+        userAdEndTimers.delete(userId);
       }
 
       return;
     }
 
-    if (isAdPlaying && !adEndTimers.has(userId)) {
+    if (isAdPlaying && !userAdEndTimers.has(userId)) {
       const timer = setTimeout(async () => {
         try {
           const user = await getUserByIdService(userId);
@@ -40,13 +40,13 @@ const handleTranscribedText =
           }
 
           isAdPlaying = false;
-          adEndTimers.delete(userId);
+          userAdEndTimers.delete(userId);
         } catch (error) {
           console.error("Failed to fetch user information", error);
         }
       }, 5000);
 
-      adEndTimers.set(userId, timer);
+      userAdEndTimers.set(userId, timer);
     }
   };
 
