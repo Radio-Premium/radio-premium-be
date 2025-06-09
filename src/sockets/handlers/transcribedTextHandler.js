@@ -2,6 +2,7 @@ import { getAdKeywords } from "../../cache/adKeywordCache.js";
 import { getUserByIdService } from "../../services/users/index.js";
 
 let isAdPlaying = false;
+let adEndTimers = new Map();
 
 const transcribedTextHandler = (whisperSocket, io, userMap) => {
   whisperSocket.off("transcribedRadioText");
@@ -13,24 +14,37 @@ const transcribedTextHandler = (whisperSocket, io, userMap) => {
     const keywords = getAdKeywords();
     const matched = keywords.find((keyword) => text.includes(keyword));
 
-    if (matched && !isAdPlaying) {
-      io.to(socketId).emit("radioText", { isAd: true });
-      isAdPlaying = true;
+    if (matched) {
+      if (!isAdPlaying) {
+        io.to(socketId).emit("radioText", { isAd: true });
+        isAdPlaying = true;
+      }
+
+      if (adEndTimers.has(userId)) {
+        clearTimeout(adEndTimers.get(userId));
+        adEndTimers.delete(userId);
+      }
+
       return;
     }
 
-    if (!matched && isAdPlaying) {
-      try {
-        const user = await getUserByIdService(userId);
+    if (isAdPlaying && !adEndTimers.has(userId)) {
+      const timer = setTimeout(async () => {
+        try {
+          const user = await getUserByIdService(userId);
 
-        if (user.isReturnChannel) {
-          io.to(socketId).emit("radioText", { isAd: false });
+          if (user.isReturnChannel) {
+            io.to(socketId).emit("radioText", { isAd: false });
+          }
+
+          isAdPlaying = false;
+          adEndTimers.delete(userId);
+        } catch (error) {
+          console.error("Failed to fetch user information", error);
         }
+      }, 5000);
 
-        isAdPlaying = false;
-      } catch (error) {
-        console.error("Failed to fetch user information", error);
-      }
+      adEndTimers.set(userId, timer);
     }
   });
 
