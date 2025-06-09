@@ -11,8 +11,8 @@ const handleTranscribedText =
     const socketId = userMap.get(userId);
     if (!socketId) return;
 
-    const keywords = getAdKeywords();
-    const matched = keywords.find((keyword) => text.includes(keyword));
+    const keywordList = getAdKeywords();
+    const matched = keywordList.find(({ keyword }) => text.includes(keyword));
 
     if (matched) {
       if (!isAdPlaying) {
