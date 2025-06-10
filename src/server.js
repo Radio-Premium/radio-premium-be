@@ -9,6 +9,7 @@ import adKeywordRoutes from "./routes/ad-keywords/index.js";
 import radioChannelRoutes from "./routes/radio-channels/index.js";
 import reportRoutes from "./routes/reports/index.js";
 import userRoutes from "./routes/users/index.js";
+import whisperRoutes from "./routes/whisper/index.js";
 import { initSocket } from "./sockets/index.js";
 
 dotenv.config();
@@ -20,6 +21,7 @@ app.use("/ad-keywords", adKeywordRoutes);
 app.use("/users", userRoutes);
 app.use("/reports", reportRoutes);
 app.use("/radio-channels", radioChannelRoutes);
+app.use("/whisper", whisperRoutes);
 
 app.use(errorHandler);
 
