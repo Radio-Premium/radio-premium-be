@@ -15,17 +15,17 @@ const handleTranscribedText =
 
     const keywordList = getAdKeywords();
     const matched = keywordList.find(({ keyword }) => text.includes(keyword));
-    const adKey = `${userId}:${channelId}`;
+    const userChannelKey = `${userId}:${channelId}`;
     const userStatus = userChannelStatus.get(userId);
 
     const isMovedChannel =
       userStatus?.prevChannelId && channelId === userStatus.prevChannelId;
 
     if (matched) {
-      if (!userIsAdPlaying.get(adKey)) {
+      if (!userIsAdPlaying.get(userChannelKey)) {
         io.to(socketId).emit("radioText", { isAd: true });
         userChannelStatus.set(userId, { prevChannelId: channelId });
-        userIsAdPlaying.set(adKey, true);
+        userIsAdPlaying.set(userChannelKey, true);
       }
 
       if (userAdEndTimers.has(userId)) {
@@ -36,7 +36,7 @@ const handleTranscribedText =
       return;
     }
 
-    if (isMovedChannel && userIsAdPlaying.get(adKey)) {
+    if (isMovedChannel && userIsAdPlaying.get(userChannelKey)) {
       if (!userAdEndTimers.has(userId)) {
         const timer = setTimeout(async () => {
           try {
@@ -45,7 +45,7 @@ const handleTranscribedText =
               io.to(socketId).emit("radioText", { isAd: false });
             }
 
-            userIsAdPlaying.set(adKey, false);
+            userIsAdPlaying.set(userChannelKey, false);
             userAdEndTimers.delete(userId);
             userChannelStatus.delete(userId);
           } catch (error) {
