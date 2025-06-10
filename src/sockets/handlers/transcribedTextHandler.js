@@ -51,7 +51,7 @@ const handleTranscribedText =
           } catch (error) {
             console.error("Failed to fetch user information", error);
           }
-        }, 5000);
+        }, 15000);
 
         userAdEndTimers.set(userId, timer);
       }
