@@ -1,7 +1,7 @@
 import { getAdKeywords } from "../../cache/adKeywordCache.js";
 import { getUserByIdService } from "../../services/users/userService.js";
 
-const userIsAdPlaying = new Map();
+const isAdPlaying = new Map();
 const userAdEndTimers = new Map();
 const userChannelStatus = new Map();
 
@@ -22,10 +22,10 @@ const handleTranscribedText =
       userStatus?.prevChannelId && channelId === userStatus.prevChannelId;
 
     if (matched) {
-      if (!userIsAdPlaying.get(userChannelKey)) {
+      if (!isAdPlaying.get(userChannelKey)) {
         io.to(socketId).emit("radioText", { isAd: true });
         userChannelStatus.set(userId, { prevChannelId: channelId });
-        userIsAdPlaying.set(userChannelKey, true);
+        isAdPlaying.set(userChannelKey, true);
       }
 
       if (userAdEndTimers.has(userId)) {
@@ -36,7 +36,7 @@ const handleTranscribedText =
       return;
     }
 
-    if (isMovedChannel && userIsAdPlaying.get(userChannelKey)) {
+    if (isMovedChannel && isAdPlaying.get(userChannelKey)) {
       if (!userAdEndTimers.has(userId)) {
         const timer = setTimeout(async () => {
           try {
@@ -45,7 +45,7 @@ const handleTranscribedText =
               io.to(socketId).emit("radioText", { isAd: false });
             }
 
-            userIsAdPlaying.set(userChannelKey, false);
+            isAdPlaying.set(userChannelKey, false);
             userAdEndTimers.delete(userId);
             userChannelStatus.delete(userId);
           } catch (error) {
