@@ -6,7 +6,7 @@ export const validateReportBody = (req, res, next) => {
   const isInvalidFormat =
     typeof userId !== "number" ||
     typeof isAd !== "boolean" ||
-    typeof detectedAdPhrase !== "string" ||
+    !(typeof detectedAdPhrase === "string" || detectedAdPhrase === null) ||
     typeof channelId !== "number";
 
   if (isInvalidFormat) {
