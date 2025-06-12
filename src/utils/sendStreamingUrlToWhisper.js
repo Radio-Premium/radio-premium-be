@@ -1,9 +1,10 @@
 import axios from "axios";
 
+const whisperURL = process.env.WHISPER_API_URL;
+
 export const sendStreamingUrlToWhisper = async (url, userId, channelId) => {
   try {
-    // TODO: Whisper 서버 배포 시 주소 변경
-    await axios.post("http://localhost:5000/transcribe", {
+    await axios.post(`${whisperURL}/transcribe`, {
       url,
       userId,
       channelId,
