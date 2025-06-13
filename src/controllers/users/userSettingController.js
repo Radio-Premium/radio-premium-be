@@ -3,6 +3,13 @@ import { getUserByIdService } from "../../services/users/userService.js";
 import { updateUserSettingsByIdService } from "../../services/users/userSettingService.js";
 import { stringToSnakeCase } from "../../utils/caseConverter.js";
 
+const respondInvalidFormat = (res) => {
+  return res.status(HTTP_STATUS.BAD_REQUEST).json({
+    status: HTTP_STATUS.BAD_REQUEST,
+    error: MESSAGES.ERROR.INVALID_FORMAT,
+  });
+};
+
 export const updateUserSettingsById = async (req, res, next) => {
   try {
     const { userId } = req.params;
@@ -13,36 +20,28 @@ export const updateUserSettingsById = async (req, res, next) => {
     ]);
 
     const updateFields = {};
+
     for (const [reqKey, dbKey] of settingFields) {
       const value = req.body?.[reqKey];
       if (value !== undefined) {
         if (typeof value !== "boolean") {
-          return res.status(HTTP_STATUS.BAD_REQUEST).json({
-            status: HTTP_STATUS.BAD_REQUEST,
-            error: MESSAGES.ERROR.INVALID_FORMAT,
-          });
+          return respondInvalidFormat(res);
         }
         updateFields[dbKey] = value;
       }
     }
 
     const { adRedirectChannelId } = req.body;
-    if (adRedirectChannelId != undefined) {
+    if (adRedirectChannelId !== undefined) {
       const isValidChannelId = Number.isInteger(adRedirectChannelId);
       if (!isValidChannelId) {
-        return res.status(HTTP_STATUS.BAD_REQUEST).json({
-          status: HTTP_STATUS.BAD_REQUEST,
-          error: MESSAGES.ERROR.INVALID_FORMAT,
-        });
+        return respondInvalidFormat(res);
       }
       updateFields["ad_redirect_channel_id"] = adRedirectChannelId;
     }
 
     if (Object.keys(updateFields).length === 0) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json({
-        status: HTTP_STATUS.BAD_REQUEST,
-        error: MESSAGES.ERROR.INVALID_FORMAT,
-      });
+      return respondInvalidFormat(res);
     }
 
     const user = await getUserByIdService(Number(userId));
@@ -57,6 +56,7 @@ export const updateUserSettingsById = async (req, res, next) => {
       Number(userId),
       updateFields
     );
+
     res.status(HTTP_STATUS.OK).json(message);
   } catch (error) {
     next(error);
