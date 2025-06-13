@@ -33,7 +33,8 @@ export const updateUserSettingsById = async (req, res, next) => {
 
     const { adRedirectChannelId } = req.body;
     if (adRedirectChannelId !== undefined) {
-      const isValidChannelId = Number.isInteger(adRedirectChannelId);
+      const isValidChannelId =
+        adRedirectChannelId === null || Number.isInteger(adRedirectChannelId);
       if (!isValidChannelId) {
         return respondInvalidFormat(res);
       }
