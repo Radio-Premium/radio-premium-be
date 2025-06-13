@@ -27,6 +27,7 @@ export const getUserByIdService = async (userId) => {
       id,
       is_ad_detect,
       is_return_channel,
+      ad_redirect_channel_id,
       created_at,
       interest_channels (
         channel_id
