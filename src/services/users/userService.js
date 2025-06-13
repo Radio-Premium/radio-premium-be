@@ -51,7 +51,6 @@ export const getUserByIdService = async (userId) => {
   return {
     ...camelData,
     userId: camelData.id,
-    adRedirectChannelId: camelData.adRedirectChannelId,
     interestChannels: camelData.interestChannels.map((item) => ({
       channelId: item.channelId,
     })),
