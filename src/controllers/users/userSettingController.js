@@ -26,6 +26,18 @@ export const updateUserSettingsById = async (req, res, next) => {
       }
     }
 
+    const { adRedirectChannelId } = req.body;
+    if (adRedirectChannelId != undefined) {
+      const isValidChannelId = Number.isInteger(adRedirectChannelId);
+      if (!isValidChannelId) {
+        return res.status(HTTP_STATUS.BAD_REQUEST).json({
+          status: HTTP_STATUS.BAD_REQUEST,
+          error: MESSAGES.ERROR.INVALID_FORMAT,
+        });
+      }
+      updateFields["ad_redirect_channel_id"] = adRedirectChannelId;
+    }
+
     if (Object.keys(updateFields).length === 0) {
       return res.status(HTTP_STATUS.BAD_REQUEST).json({
         status: HTTP_STATUS.BAD_REQUEST,
