@@ -13,7 +13,7 @@ jobs:
     env:
       S3_BUCKET: mutefm-radio-premium-deploy-v2
       APPLICATION_NAME: MuteFM-RadioPremium
-      ENVIRONMENT_NAME: MuteFM-RadioPremium-dep
+      ENVIRONMENT_NAME: MuteFM-RadioPremium-deploy
       REGION: ap-northeast-2
 
     steps:
