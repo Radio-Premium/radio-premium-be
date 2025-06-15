@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      S3_BUCKET: mutefm-radio-premium-deploy
+      S3_BUCKET: mutefm-radio-premium-deploy-v2
       APPLICATION_NAME: MuteFM-RadioPremium
-      ENVIRONMENT_NAME: MuteFM-RadioPremium-env
+      ENVIRONMENT_NAME: MuteFM-RadioPremium-dep
       REGION: ap-northeast-2
 
     steps:
