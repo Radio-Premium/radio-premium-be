@@ -15,6 +15,12 @@ export default [
     },
     rules: {
       ...js.configs.recommended.rules,
+      "no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+        },
+      ],
       "import/order": [
         "error",
         {
