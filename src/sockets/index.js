@@ -6,10 +6,12 @@ import registerWhisperHandlers from "./handlers/whisperHandler.js";
 const userMap = new Map();
 
 export const initSocket = (server) => {
+  const allowedOrigin = process.env.FRONT_API_URL.replace(/\/$/, "");
+
   const io = new Server(server, {
     cors: {
-      // TODO: 서버 배포 시 origin 업데이트
-      origin: "*",
+      origin: allowedOrigin,
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     },
   });
 
