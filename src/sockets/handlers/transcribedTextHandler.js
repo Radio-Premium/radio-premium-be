@@ -7,21 +7,28 @@ const userChannelStatus = new Map();
 
 const handleTranscribedText =
   (io, userMap) =>
-  async ({ text, userId, channelId }) => {
+  async ({ text, userId, channelId, isAd, confidence }) => {
     const socketId = userMap.get(userId);
     if (!socketId) {
       return;
     }
 
-    const keywordList = getAdKeywords();
-    const matched = keywordList.find(({ keyword }) => text.includes(keyword));
+    const needsKeywordValidation = !isAd && confidence < 0.75;
+    if (needsKeywordValidation) {
+      const keywordList = getAdKeywords();
+      const matched = keywordList.find(({ keyword }) => text.includes(keyword));
+      if (matched) {
+        isAd = true;
+      }
+    }
+
     const userChannelKey = `${userId}:${channelId}`;
     const userStatus = userChannelStatus.get(userId);
 
     const isMovedChannel =
       userStatus?.prevChannelId && channelId === userStatus.prevChannelId;
 
-    if (matched) {
+    if (isAd) {
       if (!isAdPlaying.get(userChannelKey)) {
         io.to(socketId).emit("radioText", { isAd: true });
         userChannelStatus.set(userId, { prevChannelId: channelId });
