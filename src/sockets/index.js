@@ -1,5 +1,6 @@
 import { Server } from "socket.io";
 
+import { allowedOrigin } from "../constants/env.js";
 import registerClientHandlers from "./handlers/clientHandler.js";
 import registerWhisperHandlers from "./handlers/whisperHandler.js";
 
@@ -8,8 +9,8 @@ const userMap = new Map();
 export const initSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      // TODO: 서버 배포 시 origin 업데이트
-      origin: "*",
+      origin: allowedOrigin,
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     },
   });
 

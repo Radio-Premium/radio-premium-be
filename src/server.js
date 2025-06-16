@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 
+import { allowedOrigin } from "./constants/env.js";
 import { loadAdKeywords } from "./init/loadAdKeywords.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import adKeywordRoutes from "./routes/ad-keywords/index.js";
@@ -18,7 +19,6 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-const allowedOrigin = process.env.FRONT_API_URL.replace(/\/$/, "");
 app.use(
   cors({
     origin: allowedOrigin,
