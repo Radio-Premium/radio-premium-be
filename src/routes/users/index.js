@@ -17,7 +17,7 @@ const router = express.Router();
 
 router.post("", createUser);
 router.get("/:userId", validateUserId, getUserById);
-router.put("/:userId/settings", validateUserId, updateUserSettingsById);
+router.patch("/:userId/settings", validateUserId, updateUserSettingsById);
 
 router.post(
   "/:userId/interest-channels",
