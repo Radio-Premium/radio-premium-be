@@ -4,7 +4,7 @@ const whisperURL = process.env.WHISPER_API_URL;
 
 export const sendStreamingUrlToWhisper = async (url, userId, channelId) => {
   try {
-    await axios.post(`${whisperURL}/transcribe`, {
+    await axios.post(`${whisperURL}/transcription`, {
       url,
       userId,
       channelId,
