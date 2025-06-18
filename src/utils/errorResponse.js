@@ -1,15 +1,17 @@
 import { HTTP_STATUS, MESSAGES } from "../constants/index.js";
 
+const respondWithError = (res, status, message) => {
+  return res.status(status).json({ status, error: message });
+};
+
 export const respondInvalidFormat = (res) => {
-  return res.status(HTTP_STATUS.BAD_REQUEST).json({
-    status: HTTP_STATUS.BAD_REQUEST,
-    error: MESSAGES.ERROR.INVALID_FORMAT,
-  });
+  return respondWithError(
+    res,
+    HTTP_STATUS.BAD_REQUEST,
+    MESSAGES.ERROR.INVALID_FORMAT
+  );
 };
 
 export const respondNotFound = (res, message) => {
-  return res.status(HTTP_STATUS.NOT_FOUND).json({
-    status: HTTP_STATUS.NOT_FOUND,
-    error: message,
-  });
+  return respondWithError(res, HTTP_STATUS.NOT_FOUND, message);
 };
