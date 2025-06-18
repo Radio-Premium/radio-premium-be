@@ -1,10 +1,11 @@
-import { HTTP_STATUS, MESSAGES } from "../../constants/index.js";
+import { HTTP_STATUS } from "../../constants/index.js";
 import {
   createInterestChannelService,
   getInterestChannelByIdService,
   updateInterestChannelsService,
   deleteInterestChannelService,
 } from "../../services/users/userInterestChannelService.js";
+import { respondInvalidFormat } from "../../utils/errorResponse.js";
 
 export const createInterestChannel = async (req, res, next) => {
   try {
@@ -12,10 +13,7 @@ export const createInterestChannel = async (req, res, next) => {
     const { channelId } = req.body;
 
     if (typeof channelId !== "number") {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json({
-        status: HTTP_STATUS.BAD_REQUEST,
-        error: MESSAGES.ERROR.INVALID_FORMAT,
-      });
+      return respondInvalidFormat(res);
     }
 
     const message = await createInterestChannelService(
@@ -46,10 +44,7 @@ export const updateInterestChannels = async (req, res, next) => {
     const { channelIds } = req.body;
 
     if (!Array.isArray(channelIds)) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json({
-        status: HTTP_STATUS.BAD_REQUEST,
-        error: MESSAGES.ERROR.INVALID_FORMAT,
-      });
+      return respondInvalidFormat(res);
     }
 
     const result = await updateInterestChannelsService(
@@ -68,10 +63,7 @@ export const deleteInterestChannel = async (req, res, next) => {
     const { channelId } = req.body;
 
     if (typeof channelId !== "number") {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json({
-        status: HTTP_STATUS.BAD_REQUEST,
-        error: MESSAGES.ERROR.INVALID_FORMAT,
-      });
+      return respondInvalidFormat(res);
     }
 
     const message = await deleteInterestChannelService(

@@ -2,13 +2,10 @@ import { HTTP_STATUS, MESSAGES } from "../../constants/index.js";
 import { getUserByIdService } from "../../services/users/userService.js";
 import { updateUserSettingsByIdService } from "../../services/users/userSettingService.js";
 import { stringToSnakeCase } from "../../utils/caseConverter.js";
-
-const respondInvalidFormat = (res) => {
-  return res.status(HTTP_STATUS.BAD_REQUEST).json({
-    status: HTTP_STATUS.BAD_REQUEST,
-    error: MESSAGES.ERROR.INVALID_FORMAT,
-  });
-};
+import {
+  respondInvalidFormat,
+  respondNotFound,
+} from "../../utils/errorResponse.js";
 
 export const updateUserSettingsById = async (req, res, next) => {
   try {
@@ -47,10 +44,7 @@ export const updateUserSettingsById = async (req, res, next) => {
 
     const user = await getUserByIdService(Number(userId));
     if (!user) {
-      return res.status(HTTP_STATUS.NOT_FOUND).json({
-        status: HTTP_STATUS.NOT_FOUND,
-        error: MESSAGES.ERROR.USER_NOT_FOUND,
-      });
+      return respondNotFound(res, MESSAGES.ERROR.USER_NOT_FOUND);
     }
 
     const message = await updateUserSettingsByIdService(
