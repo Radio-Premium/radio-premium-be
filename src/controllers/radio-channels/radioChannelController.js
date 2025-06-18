@@ -4,6 +4,7 @@ import {
   getRadioChannelByIdService,
   getRandomNoAdChannelService,
 } from "../../services/radio-channels/radioChannelService.js";
+import { respondNotFound } from "../../utils/errorResponse.js";
 
 export const getRadioChannelList = async (_req, res, next) => {
   try {
@@ -28,10 +29,7 @@ export const getRadioChannelById = async (req, res, next) => {
     );
 
     if (!channel) {
-      return res.status(HTTP_STATUS.NOT_FOUND).json({
-        status: HTTP_STATUS.NOT_FOUND,
-        error: MESSAGES.ERROR.CHANNEL_NOT_FOUND,
-      });
+      return respondNotFound(res, MESSAGES.ERROR.CHANNEL_NOT_FOUND);
     }
 
     res.status(HTTP_STATUS.OK).json(channel);
@@ -45,10 +43,7 @@ export const getRandomNoAdChannel = async (_req, res, next) => {
     const randomChannel = await getRandomNoAdChannelService();
 
     if (!randomChannel) {
-      return res.status(HTTP_STATUS.NOT_FOUND).json({
-        status: HTTP_STATUS.NOT_FOUND,
-        error: MESSAGES.ERROR.CHANNEL_NOT_FOUND,
-      });
+      return respondNotFound(res, MESSAGES.ERROR.CHANNEL_NOT_FOUND);
     }
 
     return res.status(HTTP_STATUS.OK).json(randomChannel);

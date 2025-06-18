@@ -1,4 +1,4 @@
-import { HTTP_STATUS, MESSAGES } from "../constants/index.js";
+import { respondInvalidFormat } from "../../utils/errorResponse.js";
 
 export const validateReportBody = (req, res, next) => {
   const { userId, isAd, detectedAdPhrase, channelId } = req.body || {};
@@ -10,10 +10,7 @@ export const validateReportBody = (req, res, next) => {
     typeof channelId === "number";
 
   if (!isValidFormat) {
-    return res.status(HTTP_STATUS.BAD_REQUEST).json({
-      status: HTTP_STATUS.BAD_REQUEST,
-      error: MESSAGES.ERROR.INVALID_FORMAT,
-    });
+    return respondInvalidFormat(res);
   }
 
   next();

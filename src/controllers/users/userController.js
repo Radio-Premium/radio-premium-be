@@ -1,9 +1,13 @@
-import { HTTP_STATUS, MESSAGES } from "../../constants/index.js";
 import {
   createUserService,
   getUserByIdService,
 } from "../../services/users/userService.js";
 import { stringToSnakeCase } from "../../utils/caseConverter.js";
+import {
+  respondInvalidFormat,
+  respondNotFound,
+} from "../../utils/errorResponse.js";
+import { HTTP_STATUS, MESSAGES } from "../constants/index.js";
 
 export const createUser = async (req, res, next) => {
   try {
@@ -18,10 +22,7 @@ export const createUser = async (req, res, next) => {
       const value = req.body?.[reqKey];
       if (value !== undefined) {
         if (typeof value !== "boolean") {
-          return res.status(HTTP_STATUS.BAD_REQUEST).json({
-            status: HTTP_STATUS.BAD_REQUEST,
-            error: MESSAGES.ERROR.INVALID_FORMAT,
-          });
+          return respondInvalidFormat(res);
         }
         insertFields[dbKey] = value;
       }
@@ -40,10 +41,7 @@ export const getUserById = async (req, res, next) => {
     const user = await getUserByIdService(Number(userId));
 
     if (!user) {
-      return res.status(HTTP_STATUS.NOT_FOUND).json({
-        status: HTTP_STATUS.NOT_FOUND,
-        error: MESSAGES.ERROR.USER_NOT_FOUND,
-      });
+      return respondNotFound(res, MESSAGES.ERROR.USER_NOT_FOUND);
     }
 
     res.status(HTTP_STATUS.OK).json(user);
