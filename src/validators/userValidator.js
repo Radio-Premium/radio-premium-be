@@ -1,4 +1,4 @@
-import { respondInvalidFormat } from "../../utils/errorResponse.js";
+import { respondInvalidFormat } from "../utils/errorResponse.js";
 
 export const validateUserId = (req, res, next) => {
   const { userId } = req.params;
