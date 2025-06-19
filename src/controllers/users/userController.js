@@ -1,3 +1,4 @@
+import { HTTP_STATUS, MESSAGES } from "../../constants/index.js";
 import {
   createUserService,
   getUserByIdService,
@@ -7,7 +8,6 @@ import {
   respondInvalidFormat,
   respondNotFound,
 } from "../../utils/errorResponse.js";
-import { HTTP_STATUS, MESSAGES } from "../constants/index.js";
 
 export const createUser = async (req, res, next) => {
   try {

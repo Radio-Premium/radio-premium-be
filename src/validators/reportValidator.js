@@ -1,4 +1,4 @@
-import { respondInvalidFormat } from "../../utils/errorResponse.js";
+import { respondInvalidFormat } from "../utils/errorResponse.js";
 
 export const validateReportBody = (req, res, next) => {
   const { userId, isAd, detectedAdPhrase, channelId } = req.body || {};

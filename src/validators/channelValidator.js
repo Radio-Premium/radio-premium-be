@@ -1,4 +1,4 @@
-import { respondInvalidFormat } from "../../utils/errorResponse.js";
+import { respondInvalidFormat } from "../utils/errorResponse.js";
 
 export const validateChannelId = (req, res, next) => {
   const { channelId } = req.params;
